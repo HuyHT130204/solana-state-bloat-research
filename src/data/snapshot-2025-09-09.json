@@ -1,0 +1,409 @@
+{
+  "metadata": {
+    "generated": "2025-09-09T07:09:57.333Z",
+    "version": "1.0.1",
+    "description": "Research data snapshot for Solana State Bloat Research",
+    "sources": [
+      "https://docs.solana.com/developers/courses/state-compression/generalized-state-compression",
+      "https://github.com/solana-labs/solana",
+      "https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana",
+      "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "https://www.termina.technology/post/data-anchor",
+      "https://solana.stackexchange.com",
+      "https://www.reddit.com/r/solana/",
+      "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node",
+      "https://www.servermania.com/kb/articles/how-to-host-solana-validator-node",
+      "https://www.arweave.org",
+      "https://filecoin.io"
+    ]
+  },
+  "research": {
+    "title": "Solana State Bloat Research: Proposing Enduring Solutions for Account Data Storage",
+    "description": "Solana's account model requires all account data to be stored fully on-chain and replicated across all validators indefinitely. This leads to significant storage costs, blockchain state bloat, and high rent fees for maintaining accounts. As of mid-2025, the live state of all accounts on Solana is approximately 500 GB, with the full unpruned ledger exceeding 400 TB. Validators require high-end hardware (e.g., 384+ GB RAM and enterprise NVMe storage) driving operational costs. This research analyzes the problem and proposes enduring solutions that balance validator storage reduction, developer data interoperability, and a seamless user experience.",
+    "author": "Huy Ho",
+    "publicationDate": "September 2025",
+    "type": "Technical Research Paper",
+    "category": "Blockchain State Management"
+  },
+  "metrics": {
+    "solana": {
+      "liveStateSize": {
+        "value": 500,
+        "unit": "GB",
+        "date": "2025-09-09",
+        "source": "https://earn.superteam.fun/listing/proposing-enduring-solutions-for-account-data-storage"
+      },
+      "fullLedgerSize": {
+        "value": 400,
+        "unit": "TB",
+        "date": "2025-09-09",
+        "source": "https://earn.superteam.fun/listing/proposing-enduring-solutions-for-account-data-storage"
+      },
+      "validatorRequirements": {
+        "ram": {
+          "min": 384,
+          "unit": "GB",
+          "source": "https://earn.superteam.fun/listing/proposing-enduring-solutions-for-account-data-storage"
+        },
+        "storage": {
+          "type": "Enterprise NVMe",
+          "size": "2 x 3.84 TB drives",
+          "source": "https://earn.superteam.fun/listing/proposing-enduring-solutions-for-account-data-storage"
+        }
+      },
+      "operationalCosts": {
+        "monthly": {
+          "min": 500,
+          "max": 1000,
+          "unit": "USD",
+          "source": "https://earn.superteam.fun/listing/proposing-enduring-solutions-for-account-data-storage"
+        }
+      },
+      "rentCosts": {
+        "smallAccounts": {
+          "min": 0.001,
+          "max": 0.01,
+          "unit": "SOL",
+          "assumption": "SOL=100 USD",
+          "source": "https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana"
+        },
+        "assumptionUSD": 218.69
+      }
+    },
+    "ethereum": {
+      "archiveNodeSize": {
+        "value": 12,
+        "unit": "TB",
+        "date": "2025-09-09",
+        "source": "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node"
+      },
+      "fullNodeSize": {
+        "value": 1.2,
+        "unit": "TB",
+        "date": "2025-09-09",
+        "source": "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node"
+      }
+    },
+    "comparison": {
+      "stateSizeGrowth": [
+        {
+          "date": "2023-01-01",
+          "solana": 200,
+          "ethereum": 0.8
+        },
+        {
+          "date": "2023-06-01",
+          "solana": 280,
+          "ethereum": 0.9
+        },
+        {
+          "date": "2023-12-01",
+          "solana": 350,
+          "ethereum": 1
+        },
+        {
+          "date": "2024-06-01",
+          "solana": 420,
+          "ethereum": 1.1
+        },
+        {
+          "date": "2024-12-01",
+          "solana": 480,
+          "ethereum": 1.2
+        },
+        {
+          "date": "2025-06-01",
+          "solana": 500,
+          "ethereum": 1.2
+        },
+        {
+          "date": "2025-09-09",
+          "solana": 500,
+          "ethereum": 1.2
+        }
+      ]
+    }
+  },
+  "solutions": {
+    "enhancedStateCompression": {
+      "title": "Enhanced State Compression with CPI-Aware Fetch APIs",
+      "summary": "This solution enhances existing state compression techniques by introducing Cross-Program Invocation (CPI)-aware fetch APIs, allowing programs to access compressed state data without full decompression. The approach builds upon SIMD-0341 and the Avocado project while addressing key limitations around CPI breakage and data interoperability.",
+      "technicalDesign": {
+        "architecture": "Middleware layer that intercepts CPI calls, fetching and decompressing only necessary data segments on-demand using Merkle proofs for verification",
+        "dataFlow": "Compressed data stored off-chain → On-chain Merkle roots → CPI-aware fetch APIs → Selective decompression → Program access",
+        "keyComponents": [
+          "Compression engine (Binary Trie/Patricia Trie)",
+          "Merkle proof verification system",
+          "CPI-aware middleware layer",
+          "On-demand decompression service",
+          "Caching layer for frequently accessed data"
+        ]
+      },
+      "implementationFeasibility": {
+        "requiresRuntimeChanges": true,
+        "requiresConsensusChanges": true,
+        "backwardCompatible": true,
+        "requiresHardFork": true,
+        "applicationLayerOnly": false
+      },
+      "costEstimate": {
+        "development": "High (6-12 months, 5-8 engineers)",
+        "deployment": "Moderate (network upgrade required)",
+        "operational": "Low (reduced storage costs)",
+        "validatorSavings": "30-50% hardware reduction",
+        "developerSavings": "40-60% rent cost reduction"
+      },
+      "migrationPlan": {
+        "phase1": "Protocol upgrade with opt-in compression",
+        "phase2": "Developer tooling and documentation",
+        "phase3": "Incentivized migration program",
+        "phase4": "Mandatory adoption after testing"
+      },
+      "securityConsiderations": [
+        "Data integrity through Merkle proofs",
+        "Availability guarantees for off-chain storage",
+        "CPI call security and validation",
+        "Compression/decompression attack vectors"
+      ],
+      "pros": [
+        "Significant storage reduction (up to 50%)",
+        "Maintains CPI compatibility",
+        "Backward compatible",
+        "Reduces validator hardware requirements"
+      ],
+      "cons": [
+        "Requires protocol changes",
+        "Increased complexity",
+        "Potential latency for decompression",
+        "Dependency on off-chain storage"
+      ]
+    },
+    "verifiableOffChainStorage": {
+      "title": "Verifiable Off-Chain Storage with On-Chain Commitments & zk/SNARK Proofs",
+      "summary": "This solution leverages decentralized storage networks like Arweave or Filecoin to store large account data off-chain, with on-chain commitments and zero-knowledge proofs ensuring data availability and integrity. The approach provides significant storage cost reductions while maintaining cryptographic guarantees.",
+      "technicalDesign": {
+        "architecture": "Hybrid on-chain/off-chain storage with cryptographic commitments and zk-SNARK proofs for verification",
+        "dataFlow": "Account data → Off-chain storage (Arweave/Filecoin) → Cryptographic commitment → On-chain Merkle root → zk-SNARK proof → Verification",
+        "keyComponents": [
+          "Decentralized storage integration (Arweave/Filecoin)",
+          "zk-SNARK proof generation system",
+          "On-chain commitment storage",
+          "Data retrieval and verification APIs",
+          "Fallback mechanisms for data availability"
+        ]
+      },
+      "implementationFeasibility": {
+        "requiresRuntimeChanges": false,
+        "requiresConsensusChanges": false,
+        "backwardCompatible": true,
+        "requiresHardFork": false,
+        "applicationLayerOnly": true
+      },
+      "costEstimate": {
+        "development": "Moderate (3-6 months, 3-5 engineers)",
+        "deployment": "Low (application layer only)",
+        "operational": "Low (off-chain storage costs)",
+        "validatorSavings": "60-80% storage reduction",
+        "developerSavings": "70-90% rent cost reduction"
+      },
+      "migrationPlan": {
+        "phase1": "Developer SDK and tooling",
+        "phase2": "Pilot program with select dApps",
+        "phase3": "Community adoption incentives",
+        "phase4": "Full ecosystem integration"
+      },
+      "securityConsiderations": [
+        "zk-SNARK proof security",
+        "Off-chain data availability",
+        "Commitment scheme integrity",
+        "Network partition resilience"
+      ],
+      "pros": [
+        "Massive storage cost reduction",
+        "No protocol changes required",
+        "Cryptographic guarantees",
+        "Leverages existing infrastructure"
+      ],
+      "cons": [
+        "Dependency on external networks",
+        "zk-SNARK complexity",
+        "Potential data availability issues",
+        "Higher development complexity"
+      ]
+    },
+    "stateExpiryArchival": {
+      "title": "State Expiry with Tiered Archival Nodes & Cryptographic Proofs",
+      "summary": "This solution implements a state expiration mechanism where inactive accounts are pruned from the active state and moved to archival nodes, reducing the active state size while preserving historical data through cryptographic proofs. The approach provides long-term scalability while maintaining data integrity.",
+      "technicalDesign": {
+        "architecture": "Tiered storage system with active state, archival state, and cryptographic proofs for data restoration",
+        "dataFlow": "Active accounts → TTL monitoring → Expiry detection → Archival transfer → Cryptographic proof → On-chain reference",
+        "keyComponents": [
+          "TTL management system",
+          "Archival node network",
+          "Cryptographic proof generation",
+          "Data restoration mechanisms",
+          "State transition protocols"
+        ]
+      },
+      "implementationFeasibility": {
+        "requiresRuntimeChanges": true,
+        "requiresConsensusChanges": true,
+        "backwardCompatible": true,
+        "requiresHardFork": true,
+        "applicationLayerOnly": false
+      },
+      "costEstimate": {
+        "development": "High (8-12 months, 6-10 engineers)",
+        "deployment": "High (major protocol upgrade)",
+        "operational": "Moderate (archival infrastructure)",
+        "validatorSavings": "40-70% active state reduction",
+        "developerSavings": "30-50% rent cost reduction"
+      },
+      "migrationPlan": {
+        "phase1": "Protocol design and testing",
+        "phase2": "Archival infrastructure setup",
+        "phase3": "Gradual TTL implementation",
+        "phase4": "Full state expiry activation"
+      },
+      "securityConsiderations": [
+        "Data integrity in archival storage",
+        "Proof verification security",
+        "State transition consistency",
+        "Archival node reliability"
+      ],
+      "pros": [
+        "Long-term scalability solution",
+        "Preserves historical data",
+        "Reduces active state size",
+        "Cryptographic guarantees"
+      ],
+      "cons": [
+        "Complex implementation",
+        "Requires major protocol changes",
+        "Archival infrastructure costs",
+        "Potential data retrieval delays"
+      ]
+    }
+  },
+  "blockchainComparison": {
+    "ethereum": {
+      "approach": "State pruning and proposed state expiry",
+      "currentState": "~1.2TB full node, ~12TB archive",
+      "solutions": [
+        "Danksharding",
+        "ZK-rollups",
+        "State expiry proposals"
+      ],
+      "effectiveness": "Moderate - slows growth but doesn't limit it",
+      "source": "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node"
+    },
+    "stellar": {
+      "approach": "State expiration in Soroban platform",
+      "currentState": "Proactive state management from launch",
+      "solutions": [
+        "Built-in state expiration",
+        "Tiered archival"
+      ],
+      "effectiveness": "High - designed for state management from start",
+      "source": "https://stellar.org/blog/developers/not-all-data-is-equal-how-soroban-is-solving-state-bloat-with-state-expiration"
+    },
+    "accumulate": {
+      "approach": "Modular architecture with data anchoring",
+      "currentState": "Distributed storage across multiple chains",
+      "solutions": [
+        "Cross-chain anchoring",
+        "Modular data storage"
+      ],
+      "effectiveness": "High - distributes storage burden",
+      "source": "https://accumulate.org/2022/07/solving-for-state-bloat-with-anchoring"
+    },
+    "aptos": {
+      "approach": "Novel data structures and consensus",
+      "currentState": "Optimized state management",
+      "solutions": [
+        "Move language optimizations",
+        "Efficient data structures"
+      ],
+      "effectiveness": "Moderate - newer chain with optimizations",
+      "source": "https://aptos.dev/"
+    },
+    "sui": {
+      "approach": "Object-centric model with efficient storage",
+      "currentState": "Designed for scalability from start",
+      "solutions": [
+        "Object-based storage",
+        "Parallel execution"
+      ],
+      "effectiveness": "High - built for scale",
+      "source": "https://sui.io/"
+    }
+  },
+  "references": [
+    {
+      "title": "Solana State Compression Documentation",
+      "url": "https://docs.solana.com/developers/courses/state-compression/generalized-state-compression",
+      "type": "Official Documentation",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Solana GitHub Repository",
+      "url": "https://github.com/solana-labs/solana",
+      "type": "Source Code",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Understanding Rent on Solana - QuickNode",
+      "url": "https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana",
+      "type": "Technical Guide",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Solana Full Node Complete Guide - GetBlock",
+      "url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "type": "Infrastructure Guide",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Termina Data Anchor",
+      "url": "https://www.termina.technology/post/data-anchor",
+      "type": "Technical Article",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Ethereum Full Node vs Archive Node - QuickNode",
+      "url": "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node",
+      "type": "Comparison Guide",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "How to Host Solana Validator Node - ServerMania",
+      "url": "https://www.servermania.com/kb/articles/how-to-host-solana-validator-node",
+      "type": "Hardware Guide",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Arweave - Permanent Data Storage",
+      "url": "https://www.arweave.org",
+      "type": "Storage Network",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Filecoin - Decentralized Storage",
+      "url": "https://filecoin.io",
+      "type": "Storage Network",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Stellar Soroban: Solving State Bloat with State Expiration",
+      "url": "https://stellar.org/blog/developers/not-all-data-is-equal-how-soroban-is-solving-state-bloat-with-state-expiration",
+      "type": "Technical Article",
+      "date": "2025-09-09"
+    },
+    {
+      "title": "Accumulate: Solving for State Bloat with Anchoring",
+      "url": "https://accumulate.org/2022/07/solving-for-state-bloat-with-anchoring",
+      "type": "Technical Article",
+      "date": "2025-09-09"
+    }
+  ]
+}
