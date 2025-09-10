@@ -31,6 +31,7 @@ function setGoogleTranslateLanguage(targetLanguage: LanguageCode) {
 
 export default function LanguageSwitcher() {
   const [lang, setLang] = useState<LanguageCode>('en')
+  const [scriptLoaded, setScriptLoaded] = useState(false)
 
   // Ensure Google translate element is initialized on mount if the script already loaded
   useEffect(() => {
@@ -39,7 +40,49 @@ export default function LanguageSwitcher() {
     }
   }, [])
 
-  const applyLanguage = useCallback((code: LanguageCode) => {
+  const loadTranslateScript = useCallback(() => {
+    if (scriptLoaded) return Promise.resolve()
+    return new Promise<void>((resolve) => {
+      const existing = document.querySelector('script[data-google-translate]') as HTMLScriptElement | null
+      if (existing) {
+        setScriptLoaded(true)
+        resolve()
+        return
+      }
+      ;(window as any).googleTranslateElementInit = function () {
+        try {
+          // @ts-ignore
+          new (window as any).google.translate.TranslateElement({
+            pageLanguage: 'en',
+            autoDisplay: false,
+            includedLanguages: 'en,vi'
+          }, 'google_translate_element')
+        } catch {}
+        setScriptLoaded(true)
+        resolve()
+      }
+      const s = document.createElement('script')
+      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+      s.async = true
+      s.defer = true
+      s.setAttribute('data-google-translate', 'true')
+      document.body.appendChild(s)
+      const mount = document.getElementById('google_translate_element')
+      if (!mount) {
+        const div = document.createElement('div')
+        div.id = 'google_translate_element'
+        div.style.position = 'fixed'
+        div.style.left = '-9999px'
+        div.style.top = '-9999px'
+        document.body.appendChild(div)
+      }
+    })
+  }, [scriptLoaded])
+
+  const applyLanguage = useCallback(async (code: LanguageCode) => {
+    if (!scriptLoaded) {
+      await loadTranslateScript()
+    }
     const applied = setGoogleTranslateLanguage(code)
     if (!applied) {
       // Retry a few times in case the script hasn't finished rendering
@@ -51,7 +94,7 @@ export default function LanguageSwitcher() {
         }
       }, 250)
     }
-  }, [])
+  }, [scriptLoaded, loadTranslateScript])
 
   const handleToggle = () => {
     const next = lang === 'en' ? 'vi' : 'en'

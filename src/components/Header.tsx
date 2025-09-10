@@ -48,8 +48,8 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src="/solana-sol-logo.png"
-              alt="Solana Logo"
+              src="/superteamvn.jpg"
+              alt="Superteam Vietnam"
               className="w-8 h-8 rounded"
             />
             <span className="font-bold text-lg gradient-text">

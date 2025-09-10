@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Download, FileText, Loader } from 'lucide-react'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+// Defer heavy libraries until user clicks generate
 
 export default function PDFExport() {
   const [isGenerating, setIsGenerating] = useState(false)
@@ -11,6 +10,8 @@ export default function PDFExport() {
     setIsGenerating(true)
     
     try {
+      const { default: jsPDF } = await import('jspdf')
+      const { default: autoTable } = await import('jspdf-autotable')
       // Create a new PDF document
       const pdf = new jsPDF('p', 'mm', 'a4')
       const pageWidth = pdf.internal.pageSize.getWidth()

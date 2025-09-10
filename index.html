@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/jpeg" href="/superteamvn.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solana State Bloat Research - Enduring Solutions for Account Data Storage</title>
     <meta name="description" content="Comprehensive research and analysis of Solana's state bloat problem with proposed enduring solutions for account data storage. Superteam Vietnam Research Bounty 2025." />
@@ -38,42 +38,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Google Translate mount (hidden) -->
-    <div id="google_translate_element" style="position: fixed; left: -9999px; top: -9999px; width: 0; height: 0; overflow: hidden;"></div>
-
-    <script>
-      window.googleTranslateElementInit = function () {
-        /* global google */
-        try {
-          new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            autoDisplay: false,
-            includedLanguages: 'en,vi'
-          }, 'google_translate_element');
-        } catch (e) {
-          // no-op
-        }
-      };
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script>
-      (function () {
-        function hideBanner() {
-          try {
-            var frames = document.querySelectorAll('iframe.goog-te-banner-frame, .goog-te-banner-frame');
-            frames.forEach(function (f) { f.style.display = 'none'; });
-            var tt = document.getElementById('goog-gt-tt');
-            if (tt) { tt.style.display = 'none'; tt.style.visibility = 'hidden'; }
-            document.body.style.top = '0px';
-            document.documentElement.style.top = '0px';
-          } catch (e) {}
-        }
-        hideBanner();
-        window.addEventListener('load', hideBanner);
-        var observer = new MutationObserver(function () { hideBanner(); });
-        observer.observe(document.documentElement, { childList: true, subtree: true });
-      })();
-    </script>
+    <!-- Google Translate is now loaded on demand to avoid render-blocking -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -4,8 +4,7 @@ import {
   OrbitControls, 
   Text as ThreeText, 
   RoundedBox, 
-  Billboard,
-  Environment
+  Billboard
 } from '@react-three/drei'
 import * as THREE from 'three'
 import { useTheme } from '../../contexts/ThemeContext'
@@ -54,7 +53,7 @@ interface SceneProps {
 // Particle system for ambient effects
 function ParticleField({ isDarkMode }: { isDarkMode: boolean }) {
   const pointsRef = useRef<THREE.Points>(null)
-  const particleCount = 100
+  const particleCount = 40
   const { scale } = useResponsive()
   
   const positions = useMemo(() => {
@@ -211,13 +210,7 @@ function ModernTower({
         position={[0, -0.05 * scale, 0]}
         radius={0.02 * scale}
       >
-        <meshPhysicalMaterial
-          color={isDarkMode ? "#1E293B" : "#E2E8F0"}
-          metalness={isDarkMode ? 0.8 : 0.4}
-          roughness={0.2}
-          emissive={isDarkMode ? "#334155" : "#F1F5F9"}
-          emissiveIntensity={isDarkMode ? 0.1 : 0.05}
-        />
+        <meshStandardMaterial color={isDarkMode ? "#1E293B" : "#E2E8F0"} metalness={0} roughness={0.8} />
       </RoundedBox>
     </group>
   )
@@ -239,14 +232,14 @@ function ModernGrid({ isDarkMode }: { isDarkMode: boolean }) {
   return (
     <>
       {/* Main floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -3 * scale, 0]} receiveShadow>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -3 * scale, 0]}>
         <planeGeometry args={[40 * scale, 40 * scale]} />
-        <meshPhysicalMaterial
+        <meshStandardMaterial
           color={isDarkMode ? "#0F172A" : "#F8FAFC"}
           transparent
           opacity={0.8}
           roughness={0.9}
-          metalness={isDarkMode ? 0.1 : 0.05}
+          metalness={0}
         />
       </mesh>
       
@@ -353,18 +346,15 @@ function Scene({ isDarkMode, data }: SceneProps) {
   return (
     <>
       {/* Advanced lighting setup */}
-      <ambientLight intensity={isDarkMode ? 0.3 : 0.6} />
+      <ambientLight intensity={isDarkMode ? 0.25 : 0.5} />
       <directionalLight 
         position={[15, 20, 10]} 
-        intensity={isDarkMode ? 1.2 : 0.8} 
-        castShadow
-        shadow-mapSize={[2048, 2048]}
+        intensity={isDarkMode ? 0.8 : 0.5}
       />
-      <pointLight position={[-10, 15, -10]} intensity={isDarkMode ? 0.6 : 0.3} color={isDarkMode ? "#06D6A0" : "#4F46E5"} />
-      <pointLight position={[10, 10, 10]} intensity={isDarkMode ? 0.4 : 0.2} color={isDarkMode ? "#3B82F6" : "#6366F1"} />
+      <pointLight position={[-10, 15, -10]} intensity={isDarkMode ? 0.4 : 0.2} color={isDarkMode ? "#06D6A0" : "#4F46E5"} />
+      <pointLight position={[10, 10, 10]} intensity={isDarkMode ? 0.3 : 0.15} color={isDarkMode ? "#3B82F6" : "#6366F1"} />
 
-      {/* Environment and effects */}
-      <Environment preset={isDarkMode ? "night" : "dawn"} />
+      {/* Effects (environment removed to avoid fetching remote HDR assets) */}
       <fog attach="fog" args={[isDarkMode ? '#0F172A' : '#F8FAFC', 20, 80]} />
       
       {/* Scene elements */}
@@ -501,12 +491,8 @@ export default function StateGrowth3D({ data = defaultData }: { data?: StateData
       {/* Canvas */}
       <Canvas
         camera={{ position: [0, 4, 22], fov: 60 }}
-        shadows
-        gl={{ 
-          antialias: true, 
-          alpha: true,
-          powerPreference: "high-performance" 
-        }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
         className="w-full h-full"
       >
         <ResponsiveCamera />

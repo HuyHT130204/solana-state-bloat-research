@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Calendar, Trophy, Users } from 'lucide-react'
-import StateGrowth3D from '../visualizations/StateGrowth3D'
+import { lazy, Suspense, useRef } from 'react'
+const StateGrowth3D = lazy(() => import('../visualizations/StateGrowth3D'))
 import { useData } from '../../contexts/DataContext'
 
 export default function Hero() {
   const [webglOK, setWebglOK] = useState(true)
+  const [is3DVisible, setIs3DVisible] = useState(false)
+  const threeMountRef = useRef<HTMLDivElement | null>(null)
   const { threeData } = useData()
 
   useEffect(() => {
@@ -16,6 +19,21 @@ export default function Hero() {
     } catch {
       setWebglOK(false)
     }
+  }, [])
+
+  useEffect(() => {
+    const el = threeMountRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIs3DVisible(entry.isIntersecting)
+        })
+      },
+      { root: null, rootMargin: '200px', threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
   // Data is now preloaded globally via DataContext
@@ -153,8 +171,12 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative h-[600px] lg:h-[700px] lg:w-1/2 flex justify-center"
           >
-            <div className="w-full max-w-lg relative">
-              {webglOK && <StateGrowth3D data={threeData} />}
+            <div ref={threeMountRef} className="w-full max-w-lg relative">
+              {webglOK && is3DVisible && (
+                <Suspense fallback={<div className="w-full h-[600px] bg-gray-100 dark:bg-gray-800 rounded-xl" />}> 
+                  <StateGrowth3D data={threeData} />
+                </Suspense>
+              )}
             </div>
             
             {/* Fallback for devices without WebGL */}
