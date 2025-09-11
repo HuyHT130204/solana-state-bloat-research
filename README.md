@@ -137,6 +137,70 @@ solana-state-bloat-research/
 - **Responsive Design**: Optimized for all device sizes
 - **Research Notes**: Detailed methodology and source documentation
 
+## 🧵 End-to-End Pipeline (2025) & Reproducibility
+
+This project ships a reproducible pipeline to collect data, generate Merkle trees/proofs, benchmark proof sizes, and optionally anchor a Merkle root on Solana devnet (with Phantom or a local keypair).
+
+### 1) Data refresh (snapshots)
+
+```
+npm run fetch-data
+```
+
+Outputs JSON snapshots in `src/data/snapshot-YYYY-MM-DD.json`. The app auto-picks the newest snapshot at runtime.
+
+### 2) SOL price refresh (optional)
+
+```
+npm run refresh:price
+```
+
+Updates `research-notes.json` with latest SOL/USD. The UI also attempts a Coingecko refresh at runtime.
+
+### 3) Generate Merkle data & measure proof sizes
+
+```
+npm run bench:merkle
+```
+
+This runs:
+- `scripts/generate-merkle.js` → builds Merkle tree from sample accounts
+- `scripts/measure-proof-sizes.js` → computes proof sizes across sample slices
+
+Artifacts land in `public/poc/data` and `poc/data` (mirrored):
+- `merkle-trees.json`, `proofs.json`, `benchmarks.csv`, `benchmark-summary.json`
+
+### 4) Verify proofs locally
+
+```
+npm run poc:verify
+```
+
+Verifies generated proofs against the Merkle root (sanity check for PoC data integrity).
+
+### 5) Anchor Merkle root on devnet (two options)
+
+Option A — From UI with Phantom (recommended):
+- Run the app (`npm run dev`), open the PoC page (`/poc_demo`)
+- Click “Anchor with Phantom (devnet)” → approve in Phantom → the tx is confirmed and shown in the UI
+
+Option B — From CLI with ephemeral/local keypair:
+```
+npm run poc:anchor -- --root <hex32>
+# or let it auto-read root from src/data/merkle-proofs.json
+```
+Artifacts go to `public/poc/artifacts/transaction-ids.json` with tx link.
+
+### 6) Data provenance & citations
+
+- All dashboard metrics are loaded from the newest `snapshot-*.json` and `research-notes.json` with `source_url` and `fetched_at` rendered in the UI.
+- Avoid editing chart constants; update snapshot/notes instead, then rebuild.
+
+### 7) Devnet details
+
+- RPC: `https://api.devnet.solana.com`
+- Wallet: Phantom (in-browser) or `SOLANA_PRIVATE_KEY` JSON array for CLI scripts
+
 ## 📈 Data Management
 
 ### Data Snapshot

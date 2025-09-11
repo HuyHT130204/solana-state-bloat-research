@@ -4,6 +4,11 @@ import notes from '../../data/research-notes.json'
 
 type ResearchNotes = {
   solPriceUSD?: { value?: number }
+  providers?: {
+    arweave?: { pricePerGbYear?: number; source_url?: string; fetched_at?: string; pricingModel?: 'one_time' | 'yearly' }
+    filecoin?: { pricePerGbYear?: number; source_url?: string; fetched_at?: string }
+    ipfs?: { pricePerGbYear?: number; source_url?: string; fetched_at?: string }
+  }
 }
 
 const BYTES_PER_UNIT: Record<'KB' | 'MB' | 'GB' | 'TB', number> = {
@@ -16,14 +21,15 @@ const BYTES_PER_UNIT: Record<'KB' | 'MB' | 'GB' | 'TB', number> = {
 export default function StorageEconomics() {
   const baseNotes = (notes as unknown as ResearchNotes)
   const [solPrice, setSolPrice] = useState<number>(baseNotes.solPriceUSD?.value ?? 200)
-  const [arweavePerGbYear, setArweavePerGbYear] = useState<number>(10.24)
-  const [filecoinPerGbYear, setFilecoinPerGbYear] = useState<number>(0.24)
-  const [ipfsPerGbYear, setIpfsPerGbYear] = useState<number>(1.80)
+  const [arweavePerGbYear, setArweavePerGbYear] = useState<number>(baseNotes.providers?.arweave?.pricePerGbYear ?? 10.24)
+  const [filecoinPerGbYear, setFilecoinPerGbYear] = useState<number>(baseNotes.providers?.filecoin?.pricePerGbYear ?? 0.24)
+  const [ipfsPerGbYear, setIpfsPerGbYear] = useState<number>(baseNotes.providers?.ipfs?.pricePerGbYear ?? 1.80)
   const [sizeValue, setSizeValue] = useState<number>(1)
   const [sizeUnit, setSizeUnit] = useState<'KB' | 'MB' | 'GB' | 'TB'>('GB')
   const [years, setYears] = useState<number>(1)
   const [kOfN, setKOfN] = useState<{ k: number; n: number }>({ k: 2, n: 3 })
   const [safetyMultiplier, setSafetyMultiplier] = useState<number>(1.5)
+  const [arweaveOneTime, setArweaveOneTime] = useState<boolean>(baseNotes.providers?.arweave?.pricingModel === 'one_time')
 
   useEffect(() => {
     // Optional: try to refresh SOL price from public API (no-fail)
@@ -45,11 +51,23 @@ export default function StorageEconomics() {
 
   const blendedPricePerGbYear = useMemo(() => {
     // Simple: majority Filecoin weighting when n>=3 else average
-    if (kOfN.n >= 3) return (filecoinPerGbYear * (kOfN.k) + arweavePerGbYear * Math.max(0, kOfN.k - 1)) / kOfN.k
-    return (arweavePerGbYear + filecoinPerGbYear) / 2
+    const arw = arweavePerGbYear
+    const fil = filecoinPerGbYear
+    if (kOfN.n >= 3) return (fil * (kOfN.k) + arw * Math.max(0, kOfN.k - 1)) / kOfN.k
+    return (arw + fil) / 2
   }, [arweavePerGbYear, filecoinPerGbYear, kOfN])
 
-  const totalUsd = useMemo(() => sizeGb * years * blendedPricePerGbYear * safetyMultiplier, [sizeGb, years, blendedPricePerGbYear, safetyMultiplier])
+  const totalUsd = useMemo(() => {
+    const arwComponent = sizeGb * (arweavePerGbYear) * safetyMultiplier
+    const filComponent = sizeGb * (filecoinPerGbYear) * safetyMultiplier
+    // If Arweave is one-time, do not multiply Arweave portion by years
+    const yearlyFactorArw = arweaveOneTime ? 1 : years
+    // Approximate split of blended between Arweave and Filecoin by their ratio
+    const totalWeight = arweavePerGbYear + filecoinPerGbYear
+    const arwShare = totalWeight > 0 ? arweavePerGbYear / totalWeight : 0.5
+    const filShare = 1 - arwShare
+    return arwShare * arwComponent * yearlyFactorArw + filShare * filComponent * years
+  }, [sizeGb, years, safetyMultiplier, arweavePerGbYear, filecoinPerGbYear, arweaveOneTime])
   const totalSol = useMemo(() => totalUsd / (solPrice || 1), [totalUsd, solPrice])
   return (
     <section id="storage-economics" className="section-padding bg-gray-50 dark:bg-gray-800">
@@ -67,18 +85,36 @@ export default function StorageEconomics() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
               <div className="font-medium mb-1">Arweave</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">${arweavePerGbYear.toFixed(2)}/GB/year</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">${arweavePerGbYear.toFixed(2)}/GB/{arweaveOneTime ? 'one-time*' : 'year'}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">{(arweavePerGbYear / solPrice).toFixed(4)} SOL/GB/year</div>
+              {baseNotes.providers?.arweave?.source_url && (
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                  <a href={baseNotes.providers.arweave.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Source</a>
+                  {baseNotes.providers.arweave.fetched_at && <span className="ml-1">({baseNotes.providers.arweave.fetched_at})</span>}
+                </div>
+              )}
             </div>
             <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
               <div className="font-medium mb-1">Filecoin</div>
               <div className="text-sm text-gray-600 dark:text-gray-300">${filecoinPerGbYear.toFixed(2)}/GB/year</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">{(filecoinPerGbYear / solPrice).toFixed(4)} SOL/GB/year</div>
+              {baseNotes.providers?.filecoin?.source_url && (
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                  <a href={baseNotes.providers.filecoin.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Source</a>
+                  {baseNotes.providers.filecoin.fetched_at && <span className="ml-1">({baseNotes.providers.filecoin.fetched_at})</span>}
+                </div>
+              )}
             </div>
             <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
               <div className="font-medium mb-1">IPFS</div>
               <div className="text-sm text-gray-600 dark:text-gray-300">${ipfsPerGbYear.toFixed(2)}/GB/year</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">{(ipfsPerGbYear / solPrice).toFixed(4)} SOL/GB/year</div>
+              {baseNotes.providers?.ipfs?.source_url && (
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                  <a href={baseNotes.providers.ipfs.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Source</a>
+                  {baseNotes.providers.ipfs.fetched_at && <span className="ml-1">({baseNotes.providers.ipfs.fetched_at})</span>}
+                </div>
+              )}
             </div>
             <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
               <div className="font-medium mb-1">On-Chain (Solana)</div>
@@ -104,6 +140,10 @@ export default function StorageEconomics() {
                 </label>
                 <label className="flex items-center gap-2">Safety x
                   <input type="number" className="input" value={safetyMultiplier} min={1} step={0.1} onChange={(e) => setSafetyMultiplier(parseFloat(e.target.value || '1'))} />
+                </label>
+                <label className="flex items-center gap-2 col-span-2">
+                  <input type="checkbox" className="checkbox" checked={arweaveOneTime} onChange={(e) => setArweaveOneTime(e.target.checked)} />
+                  Treat Arweave as one-time payment
                 </label>
                 <label className="flex items-center gap-2 col-span-2">k-of-n
                   <input type="number" className="input" value={kOfN.k} min={1} step={1} onChange={(e) => setKOfN((p) => ({ ...p, k: parseInt(e.target.value || '1') }))} />

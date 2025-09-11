@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Play, RefreshCw } from 'lucide-react'
 import proofsDoc from '../data/merkle-proofs.json'
+import { Connection, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js'
+import { Buffer } from 'buffer'
 
 interface BenchmarkData {
   merkleProofSize: number
@@ -29,6 +31,7 @@ export default function PocDemo({ embedded = false }: { embedded?: boolean }) {
   const [realPocData, setRealPocData] = useState<RealPocData | null>(null)
   const [anchorTx, setAnchorTx] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isAnchoring, setIsAnchoring] = useState(false)
 
   // Load real PoC data
   useEffect(() => {
@@ -153,6 +156,43 @@ export default function PocDemo({ embedded = false }: { embedded?: boolean }) {
   const wrapperClass = embedded ? 'bg-transparent pt-1' : 'min-h-screen bg-gray-50 dark:bg-gray-900 pt-16'
   const innerClass = embedded ? 'container-max px-4 md:px-5 pb-4' : 'container-max section-padding'
 
+  async function anchorWithPhantom() {
+    try {
+      setIsAnchoring(true)
+      // @ts-expect-error window solana injected by Phantom
+      const provider = window?.solana
+      if (!provider?.isPhantom) {
+        alert('Phantom wallet not detected. Please install Phantom.')
+        return
+      }
+      await provider.connect()
+      const conn = new Connection('https://api.devnet.solana.com', 'confirmed')
+      const MEMO = new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr')
+      const rootHex = (realPocData?.merkleRoot || proofsDoc.root || '').toLowerCase()
+      if (!/^([0-9a-f]{64})$/.test(rootHex)) {
+        alert('Invalid or missing Merkle root (expect 32-byte hex).')
+        return
+      }
+      const memoData = Buffer.from(JSON.stringify({ t: 'merkle_root', algo: 'sha256', root: rootHex }))
+      const ix = new TransactionInstruction({ keys: [], programId: MEMO, data: memoData })
+      const tx = new Transaction().add(ix)
+      tx.feePayer = new PublicKey(provider.publicKey?.toString())
+      const { blockhash, lastValidBlockHeight } = await conn.getLatestBlockhash('confirmed')
+      tx.recentBlockhash = blockhash
+      const signed = await provider.signTransaction(tx)
+      const sig = await conn.sendRawTransaction(signed.serialize())
+      await conn.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, 'confirmed')
+      setAnchorTx(sig)
+      alert('Anchored on devnet. Tx: ' + sig)
+    } catch (e) {
+      const msg = (e as Error)?.message || 'unknown error'
+      console.error('Anchor failed:', e)
+      alert('Anchor failed: ' + msg)
+    } finally {
+      setIsAnchoring(false)
+    }
+  }
+
   return (
     <div className={wrapperClass}>
       <div className={innerClass}>
@@ -176,6 +216,14 @@ export default function PocDemo({ embedded = false }: { embedded?: boolean }) {
               >
                 {isGenerating ? <RefreshCw size={16} className="animate-spin" /> : <Play size={16} />}
                 {isGenerating ? 'Generating...' : 'Generate New Proofs'}
+              </button>
+              <button
+                onClick={anchorWithPhantom}
+                disabled={isAnchoring}
+                className="btn-secondary flex items-center gap-2 disabled:opacity-50"
+              >
+                {isAnchoring ? <RefreshCw size={16} className="animate-spin" /> : <Play size={16} />}
+                {isAnchoring ? 'Anchoring…' : 'Anchor with Phantom (devnet)'}
               </button>
               <button
                 onClick={loadRealPocData}

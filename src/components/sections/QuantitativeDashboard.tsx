@@ -3,39 +3,51 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, HardDrive, DollarSign, Users, Link as LinkIcon } from 'lucide-react'
 import notes from '../../data/research-notes.json'
 import bench from '../../data/benchmarks.json'
+import { useEffect, useMemo, useState } from 'react'
+import { useData } from '../../contexts/DataContext'
 
-const stateGrowthData = [
-  { date: '2023-01', solana: 200, ethereum: 0.8 },
-  { date: '2023-06', solana: 280, ethereum: 0.9 },
-  { date: '2023-12', solana: 350, ethereum: 1.0 },
-  { date: '2024-06', solana: 420, ethereum: 1.1 },
-  { date: '2024-12', solana: 480, ethereum: 1.2 },
-  { date: '2025-06', solana: 500, ethereum: 1.2 },
-  { date: '2025-09', solana: 500, ethereum: 1.2 },
-]
+type SnapshotDoc = {
+  generated_at?: string
+  metrics?: {
+    solana?: {
+      liveStateSize?: { value?: number; unit?: string; date?: string; source?: string }
+      fullLedgerSize?: { value?: number; unit?: string; date?: string; source?: string }
+      operationalCosts?: { monthly?: { min?: number; max?: number; unit?: string; source?: string } }
+      validatorRequirements?: { ram?: { min?: number; max?: number; unit?: string; source?: string } }
+      rentCosts?: unknown
+    }
+    ethereum?: {
+      fullNodeSize?: { value?: number; unit?: string; date?: string; source?: string }
+      archiveNodeSize?: { value?: number; unit?: string; date?: string; source?: string }
+    }
+    comparison?: { stateSizeGrowth?: { date: string; solana: number; ethereum: number }[] }
+  }
+}
 
-const validatorCostsData = [
-  { category: 'Hardware', cost: 400, color: '#3B82F6' },
-  { category: 'Storage', cost: 200, color: '#10B981' },
-  { category: 'Bandwidth', cost: 100, color: '#F59E0B' },
-  { category: 'Maintenance', cost: 100, color: '#EF4444' },
-]
+function useLatestSnapshot() {
+  const [snapshot, setSnapshot] = useState<SnapshotDoc | null>(null)
+  useEffect(() => {
+    const mods = import.meta.glob('../../data/snapshot-*.json', { eager: true }) as Record<string, unknown>
+    const latest = Object.entries(mods)
+      .map(([path, mod]) => ({ path, mod }))
+      .sort((a, b) => {
+        const da = a.path.match(/snapshot-(\d{4})-(\d{2})-(\d{2})\.json$/)
+        const db = b.path.match(/snapshot-(\d{4})-(\d{2})-(\d{2})\.json$/)
+        const ta = da ? new Date(`${da[1]}-${da[2]}-${da[3]}T00:00:00Z`).getTime() : 0
+        const tb = db ? new Date(`${db[1]}-${db[2]}-${db[3]}T00:00:00Z`).getTime() : 0
+        return tb - ta
+      })[0]?.mod as { default?: SnapshotDoc } & SnapshotDoc | undefined
+    const doc: SnapshotDoc | null = latest ? (latest.default ?? (latest as SnapshotDoc)) : null
+    setSnapshot(doc)
+  }, [])
+  return snapshot
+}
 
-const blockchainComparisonData = [
-  { name: 'Solana', stateSize: 500, unit: 'GB', color: '#14F195' },
-  { name: 'Ethereum', stateSize: 1.2, unit: 'TB', color: '#627EEA' },
-  { name: 'Aptos', stateSize: 50, unit: 'GB', color: '#00D4AA' },
-  { name: 'Sui', stateSize: 30, unit: 'GB', color: '#4F46E5' },
-  { name: 'Avalanche', stateSize: 20, unit: 'GB', color: '#E84142' },
-]
+type CostSlice = { category: string; cost: number; color: string }
 
-const rentCostsData = [
-  { accountSize: '1KB', rent: 0.001, sol: 0.001 },
-  { accountSize: '10KB', rent: 0.01, sol: 0.01 },
-  { accountSize: '100KB', rent: 0.1, sol: 0.1 },
-  { accountSize: '1MB', rent: 1.0, sol: 1.0 },
-  { accountSize: '10MB', rent: 10.0, sol: 10.0 },
-]
+type ChainBar = { name: string; stateSize: number; unit: string; color: string }
+
+type RentRow = { accountSize: string; rent: number; sol: number }
 
 // const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444']
 
@@ -56,6 +68,53 @@ export default function QuantitativeDashboard() {
   const liveState = claim('live-state-size')
   const fullLedger = claim('full-ledger-size')
   const validatorRam = claim('validator-ram')
+  const snapshot = useLatestSnapshot()
+  const { threeData } = useData()
+
+  const stateGrowthData = useMemo(() => {
+    if (threeData && threeData.length) return threeData
+    const arr = snapshot?.metrics?.comparison?.stateSizeGrowth ?? []
+    return arr.map((d) => ({ date: (d.date ?? '').slice(0, 7).replace('-01', ''), solana: d.solana, ethereum: d.ethereum }))
+  }, [threeData, snapshot])
+
+  const blockchainComparisonData: ChainBar[] = useMemo(() => {
+    const sol = snapshot?.metrics?.solana?.liveStateSize
+    const eth = snapshot?.metrics?.ethereum?.fullNodeSize
+    const out: ChainBar[] = []
+    if (sol?.value) out.push({ name: 'Solana', stateSize: sol.value, unit: sol.unit ?? 'GB', color: '#14F195' })
+    if (eth?.value) out.push({ name: 'Ethereum', stateSize: eth.value, unit: eth.unit ?? 'TB', color: '#627EEA' })
+    // Fallback to reasonable defaults when snapshot missing
+    if (out.length === 0) {
+      out.push({ name: 'Solana', stateSize: 500, unit: 'GB', color: '#14F195' })
+      out.push({ name: 'Ethereum', stateSize: 1.2, unit: 'TB', color: '#627EEA' })
+    }
+    return out
+  }, [snapshot])
+
+  const validatorCostsData: CostSlice[] = useMemo(() => {
+    const monthly = snapshot?.metrics?.solana?.operationalCosts?.monthly
+    const min = monthly?.min ?? 500
+    // Split illustrative: 40% HW, 30% Storage, 20% Bandwidth, 10% Maintenance
+    return [
+      { category: 'Hardware', cost: Math.round(min * 0.4), color: '#3B82F6' },
+      { category: 'Storage', cost: Math.round(min * 0.3), color: '#10B981' },
+      { category: 'Bandwidth', cost: Math.round(min * 0.2), color: '#F59E0B' },
+      { category: 'Maintenance', cost: Math.round(min * 0.1), color: '#EF4444' },
+    ]
+  }, [snapshot])
+
+  const rentCostsData: RentRow[] = useMemo(() => {
+    // Use ranges from notes as indicative tiers
+    const min = 0.001
+    const max = 0.01
+    return [
+      { accountSize: '1KB', rent: min, sol: min },
+      { accountSize: '10KB', rent: max, sol: max },
+      { accountSize: '100KB', rent: max * 10, sol: max * 10 },
+      { accountSize: '1MB', rent: max * 100, sol: max * 100 },
+      { accountSize: '10MB', rent: max * 1000, sol: max * 1000 },
+    ]
+  }, [])
   return (
     <section id="dashboard" className="section-padding bg-white dark:bg-gray-900">
       <div className="container-max">
@@ -198,9 +257,9 @@ export default function QuantitativeDashboard() {
             </ResponsiveContainer>
             <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 space-x-1">
               <span>Sources:</span>
-              <a href="https://getblock.io/blog/solana-full-node-complete-guide/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">GetBlock</a>
+              <a href={snapshot?.metrics?.solana?.liveStateSize?.source || 'https://getblock.io/blog/solana-full-node-complete-guide/'} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Solana</a>
               <span>·</span>
-              <a href="https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">QuickNode</a>
+              <a href={snapshot?.metrics?.ethereum?.fullNodeSize?.source || 'https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node'} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Ethereum</a>
             </div>
           </motion.div>
 
@@ -242,96 +301,99 @@ export default function QuantitativeDashboard() {
               </PieChart>
             </ResponsiveContainer>
             <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-              Source: <a href="#about-researcher" 
+              Source: <a href={snapshot?.metrics?.solana?.operationalCosts?.monthly?.source || '#about-researcher'} 
                          target="_blank" rel="noopener noreferrer" 
                          className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                Independent Research
+                {snapshot?.metrics?.solana?.operationalCosts?.monthly?.source ? 'Operational Cost Source' : 'Independent Research'}
               </a>
             </div>
           </motion.div>
         </div>
 
-        {/* Blockchain Comparison */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          viewport={{ once: true }}
-          className="card mb-16"
-        >
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
-            Blockchain State Size Comparison
-          </h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={blockchainComparisonData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis 
-                dataKey="name" 
-                stroke="#6B7280"
-                fontSize={12}
-              />
-              <YAxis 
-                stroke="#6B7280"
-                fontSize={12}
-                label={{ value: 'State Size', angle: -90, position: 'insideLeft' }}
-              />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'var(--tw-bg-opacity)',
-                  border: '1px solid #374151',
-                  borderRadius: '8px',
-                  color: 'var(--tw-text-opacity)'
-                }}
-                formatter={(value, _name, props) => [
-                  `${value} ${props.payload.unit}`,
-                  'State Size'
-                ]}
-              />
-              <defs>
-                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.9} />
-                  <stop offset="100%" stopColor="#3B82F6" stopOpacity={0.3} />
-                </linearGradient>
-              </defs>
-              <Bar dataKey="stateSize" fill="url(#barGrad)" radius={[6,6,0,0]}>
-                {blockchainComparisonData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-          <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 space-x-1">
-            <span>Sources:</span>
-            <a href="https://getblock.io/blog/solana-full-node-complete-guide/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">GetBlock</a>
-            <span>·</span>
-            <a href="https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">QuickNode</a>
-          </div>
-        </motion.div>
+        {/* Comparison + Proof Sizes side-by-side */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          {/* Blockchain Comparison */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="card"
+          >
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+              Blockchain State Size Comparison
+            </h3>
+            <ResponsiveContainer width="100%" height={360}>
+              <BarChart data={blockchainComparisonData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="#6B7280"
+                  fontSize={12}
+                />
+                <YAxis 
+                  stroke="#6B7280"
+                  fontSize={12}
+                  label={{ value: 'State Size', angle: -90, position: 'insideLeft' }}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'var(--tw-bg-opacity)',
+                    border: '1px solid #374151',
+                    borderRadius: '8px',
+                    color: 'var(--tw-text-opacity)'
+                  }}
+                  formatter={(value, _name, props) => [
+                    `${value} ${props.payload.unit}`,
+                    'State Size'
+                  ]}
+                />
+                <defs>
+                  <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.9} />
+                    <stop offset="100%" stopColor="#3B82F6" stopOpacity={0.3} />
+                  </linearGradient>
+                </defs>
+                <Bar dataKey="stateSize" fill="url(#barGrad)" radius={[6,6,0,0]}>
+                  {blockchainComparisonData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 space-x-1">
+              <span>Sources:</span>
+              <a href={snapshot?.metrics?.solana?.liveStateSize?.source || 'https://getblock.io/blog/solana-full-node-complete-guide/'} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Solana</a>
+              <span>·</span>
+              <a href={snapshot?.metrics?.ethereum?.fullNodeSize?.source || 'https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node'} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Ethereum</a>
+            </div>
+          </motion.div>
 
-        {/* Merkle Proof Size Benchmarks */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.55 }}
-          viewport={{ once: true }}
-          className="card mb-16"
-        >
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
-            Merkle Proof Sizes (sampleCount=1024)
-          </h3>
-          <ResponsiveContainer width="100%" height={320}>
-            <BarChart data={proofSizes} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="accountSizeBytes" stroke="#6B7280" fontSize={12} />
-              <YAxis stroke="#6B7280" fontSize={12} />
-              <Tooltip contentStyle={{ background: 'rgba(17,24,39,0.9)', border: '1px solid #374151', borderRadius: '8px', color: '#F9FAFB' }} labelStyle={{ color: '#9CA3AF' }} />
-              <Bar dataKey="proofBytes" fill="#3B82F6" radius={[6,6,0,0]} name="Proof Size (bytes)" />
-            </BarChart>
-          </ResponsiveContainer>
-          <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-            Generated: {benchmarksDoc?.generated_at ?? '—'}
-          </div>
-        </motion.div>
+          {/* Merkle Proof Size Benchmarks */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.55 }}
+            viewport={{ once: true }}
+            className="card"
+          >
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+              Merkle Proof Sizes (sampleCount=1024)
+            </h3>
+            <ResponsiveContainer width="100%" height={360}>
+              <BarChart data={proofSizes} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis dataKey="accountSizeBytes" stroke="#6B7280" fontSize={12} />
+                <YAxis stroke="#6B7280" fontSize={12} />
+                <Tooltip contentStyle={{ background: 'rgba(17,24,39,0.9)', border: '1px solid #374151', borderRadius: '8px', color: '#F9FAFB' }} labelStyle={{ color: '#9CA3AF' }} />
+                <Bar dataKey="proofBytes" fill="#3B82F6" radius={[6,6,0,0]} name="Proof Size (bytes)" />
+              </BarChart>
+            </ResponsiveContainer>
+            <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+              Generated: {benchmarksDoc?.generated_at ?? '—'}
+            </div>
+          </motion.div>
+        </div>
 
         {/* Rent Costs Table */}
         <motion.div

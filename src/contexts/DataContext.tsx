@@ -16,7 +16,28 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     let mounted = true
     const load = async () => {
       try {
-        const mod = await import('../data/snapshot-2025-09-09.json')
+        // Dynamically pick the newest snapshot that actually contains comparison.stateSizeGrowth
+        const dataModules = import.meta.glob('../data/snapshot-*.json', { eager: true }) as Record<string, unknown>
+        const candidates = Object.entries(dataModules)
+          .map(([path, mod]) => ({ path, mod }))
+          .sort((a, b) => {
+            const da = a.path.match(/snapshot-(\d{4})-(\d{2})-(\d{2})\.json$/)
+            const db = b.path.match(/snapshot-(\d{4})-(\d{2})-(\d{2})\.json$/)
+            const ta = da ? new Date(`${da[1]}-${da[2]}-${da[3]}T00:00:00Z`).getTime() : 0
+            const tb = db ? new Date(`${db[1]}-${db[2]}-${db[3]}T00:00:00Z`).getTime() : 0
+            return tb - ta
+          })
+
+        let chosen: unknown = {}
+        for (const c of candidates) {
+          const asModule = (c.mod as { default?: unknown })
+          const source = (asModule?.default ?? c.mod) as { metrics?: { comparison?: { stateSizeGrowth?: unknown[] } } }
+          if (Array.isArray(source.metrics?.comparison?.stateSizeGrowth) && source.metrics!.comparison!.stateSizeGrowth!.length > 0) {
+            chosen = c.mod
+            break
+          }
+        }
+        const mod = chosen
         type RawGrowth = { date: string; solana: number; ethereum: number }
         type Snapshot = { metrics?: { comparison?: { stateSizeGrowth?: RawGrowth[] } } }
         const asModule = mod as { default?: Snapshot } & Snapshot
