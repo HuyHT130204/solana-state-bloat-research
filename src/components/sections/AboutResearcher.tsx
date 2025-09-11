@@ -5,20 +5,27 @@ const socialLinks = [
   {
     name: 'Facebook',
     url: 'https://www.facebook.com/huy.ht.1302',
-    icon: '📘',
+    icon: 'https://img.icons8.com/?size=100&id=118497&format=png&color=000000',
     color: 'hover:text-blue-600 dark:hover:text-blue-400'
   },
   {
     name: 'Twitter/X',
     url: 'https://x.com/huyht1302',
-    icon: '🐦',
+    icon: 'https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=000000',
     color: 'hover:text-blue-500 dark:hover:text-blue-300'
   },
   {
     name: 'Instagram',
     url: 'https://www.instagram.com/thanhhhuy_23/',
-    icon: '📷',
+    icon: 'https://img.icons8.com/?size=100&id=Xy10Jcu1L2Su&format=png&color=000000',
     color: 'hover:text-pink-600 dark:hover:text-pink-400'
+  }
+  ,
+  {
+    name: 'GitHub',
+    url: 'https://github.com/HuyHT130204',
+    icon: 'https://img.icons8.com/?size=100&id=12598&format=png&color=000000',
+    color: 'hover:text-gray-900 dark:hover:text-gray-100'
   }
 ]
 
@@ -208,7 +215,12 @@ export default function AboutResearcher() {
                     rel="noopener noreferrer"
                     className={`group inline-flex items-center space-x-3 px-6 py-3 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 ${social.color}`}
                   >
-                    <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{social.icon}</span>
+                    <img
+                      src={social.icon}
+                      alt={`${social.name} icon`}
+                      className="w-6 h-6 object-contain group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy"
+                    />
                     <span className="font-medium">{social.name}</span>
                   </a>
                 ))}

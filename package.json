@@ -10,7 +10,12 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "fetch-data": "node scripts/fetch-latest-data.js"
+    "fetch-data": "node scripts/fetch-latest-data.js",
+    "refresh:price": "node scripts/refresh-sol-price.js",
+    "bench:merkle": "node scripts/generate-merkle.js && node scripts/measure-proof-sizes.js",
+    "poc:anchor": "node scripts/anchor-root.js",
+    "poc:verify": "node scripts/verify-proof.js",
+    "poc:run": "node scripts/run-poc.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.13",
@@ -26,7 +31,8 @@
     "react-router-dom": "^6.20.1",
     "recharts": "^2.8.0",
     "tailwind-merge": "^2.0.0",
-    "three": "^0.158.0"
+    "three": "^0.158.0",
+    "@solana/web3.js": "^1.95.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.4",

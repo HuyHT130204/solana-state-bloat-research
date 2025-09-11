@@ -21,6 +21,8 @@ const navigation = [
   { name: 'References', href: '#references' },
 ]
 
+// External pages were replaced by floating modals on Home. Keep header minimal.
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
@@ -36,9 +38,15 @@ export default function Header() {
   }
 
   const handleDownloadPDF = () => {
-    // This will be implemented in the PDF export component
-    const event = new CustomEvent('download-pdf')
-    window.dispatchEvent(event)
+    // Prefer direct global trigger if available, else fallback to custom event
+    // @ts-ignore
+    if (typeof window.generateResearchPDF === 'function') {
+      // @ts-ignore
+      window.generateResearchPDF()
+    } else {
+      const event = new CustomEvent('download-pdf')
+      window.dispatchEvent(event)
+    }
   }
 
   return (
@@ -68,6 +76,7 @@ export default function Header() {
                 {item.name}
               </button>
             ))}
+            {/* Removed page links; PoC and Notes accessible via floating actions */}
           </div>
 
           {/* Desktop Actions */}
@@ -80,14 +89,6 @@ export default function Header() {
               <Download className="w-4 h-4" />
               <span>Download PDF</span>
             </button>
-            
-            <a
-              href="#about-researcher"
-              className="flex items-center space-x-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
-            >
-              <ExternalLink className="w-4 h-4" />
-              <span>About</span>
-            </a>
 
             <button
               onClick={toggleTheme}
@@ -147,6 +148,7 @@ export default function Header() {
                     {item.name}
                   </button>
                 ))}
+                {/* Removed page links; accessible via floating actions */}
                 
                 <div className="px-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                   <button

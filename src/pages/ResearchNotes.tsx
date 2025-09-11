@@ -1,134 +1,38 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, Calendar, ExternalLink, Search, FileText } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Calendar, ExternalLink, Search, FileText, Link as LinkIcon } from 'lucide-react'
+import notes from '../data/research-notes.json'
 
-const researchLog = [
-  {
-    date: '2025-09-09',
-    source: 'Independent Research',
-    url: '#about-researcher',
-    keyFacts: [
-      'Live state size: 500 GB',
-      'Full ledger size: 400+ TB',
-      'Validator RAM requirement: 384+ GB',
-      'Monthly operational costs: $500-1,000',
-      'Rent costs: 0.001-0.01 SOL for small accounts'
-    ],
-    notes: 'Primary source for current state metrics and problem definition'
-  },
-  {
-    date: '2025-09-09',
-    source: 'Solana State Compression Documentation',
-    url: 'https://docs.solana.com/developers/courses/state-compression/generalized-state-compression',
-    keyFacts: [
-      'Official documentation on state compression',
-      'Generalized state compression approach',
-      'Technical implementation details'
-    ],
-    notes: 'Official technical documentation for SIMD-0341 and related proposals'
-  },
-  {
-    date: '2025-09-09',
-    source: 'QuickNode: Understanding Rent on Solana',
-    url: 'https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana',
-    keyFacts: [
-      'Rent system explanation',
-      'Cost calculations',
-      'Developer impact analysis'
-    ],
-    notes: 'Comprehensive guide to Solana rent system and developer costs'
-  },
-  {
-    date: '2025-09-09',
-    source: 'Stellar Soroban: State Expiration',
-    url: 'https://stellar.org/blog/developers/not-all-data-is-equal-how-soroban-is-solving-state-bloat-with-state-expiration',
-    keyFacts: [
-      'State expiration implementation',
-      'Proactive state management',
-      'Built-in TTL mechanisms'
-    ],
-    notes: 'Excellent example of state management designed from the ground up'
-  },
-  {
-    date: '2025-09-09',
-    source: 'Accumulate: Data Anchoring',
-    url: 'https://accumulate.org/2022/07/solving-for-state-bloat-with-anchoring',
-    keyFacts: [
-      'Cross-chain data anchoring',
-      'Modular storage approach',
-      'Distributed storage strategy'
-    ],
-    notes: 'Innovative approach to distributed storage and state management'
-  },
-  {
-    date: '2025-09-09',
-    source: 'Ethereum Node Requirements',
-    url: 'https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node',
-    keyFacts: [
-      'Ethereum full node: ~1.2TB',
-      'Ethereum archive node: ~12TB',
-      'Comparison with Solana requirements'
-    ],
-    notes: 'Baseline comparison for blockchain storage requirements'
-  }
-]
+type ResearchLogEntry = {
+  date: string
+  source: string
+  url: string
+  keyFacts: string[]
+  snippet?: string
+  fetched_at?: string
+}
 
-const methodology = [
-  {
-    step: '1',
-    title: 'Problem Analysis',
-    description: 'Analyzed the baseline problem statement and identified key metrics that needed verification',
-    sources: ['Independent Research', 'Solana Documentation'],
-    outcome: 'Confirmed current state size, validator requirements, and operational costs'
-  },
-  {
-    step: '2',
-    title: 'Technical Research',
-    description: 'Researched existing solutions including SIMD-0341, Avocado project, and state compression',
-    sources: ['Solana GitHub', 'Official Documentation', 'Technical Guides'],
-    outcome: 'Identified limitations and areas for improvement in current approaches'
-  },
-  {
-    step: '3',
-    title: 'Comparative Analysis',
-    description: 'Analyzed how other blockchains handle state management and storage optimization',
-    sources: ['Stellar Documentation', 'Accumulate Research', 'Ethereum Guides'],
-    outcome: 'Identified best practices and lessons learned from other networks'
-  },
-  {
-    step: '4',
-    title: 'Solution Design',
-    description: 'Developed three comprehensive solutions based on research findings',
-    sources: ['All previous research', 'Technical feasibility analysis'],
-    outcome: 'Created detailed technical specifications and implementation plans'
-  },
-  {
-    step: '5',
-    title: 'Verification & Validation',
-    description: 'Cross-referenced all claims and data points with multiple sources',
-    sources: ['Multiple authoritative sources', 'Community discussions'],
-    outcome: 'Ensured accuracy and reliability of all presented information'
-  }
-]
+type TopClaim =
+  | { id: string; label: string; value: number; unit: string; source_url: string; fetched_at?: string; note?: string }
+  | { id: string; label: string; min: number; max: number; unit: string; source_url: string; fetched_at?: string; note?: string }
 
-export default function ResearchNotes() {
+export default function ResearchNotes({ embedded = false }: { embedded?: boolean }) {
+  const researchLog = (notes as { log: ResearchLogEntry[] }).log
+  const topClaims = (notes as { topClaims: TopClaim[] }).topClaims
+
+  const wrapperClass = embedded ? 'bg-transparent pt-1' : 'min-h-screen bg-gray-50 dark:bg-gray-900 pt-16'
+  const innerClass = embedded ? 'container-max px-4 md:px-5 pb-4' : 'container-max section-padding'
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="container-max section-padding">
+    <div className={wrapperClass}>
+      <div className={innerClass}>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
+          transition={{ duration: 0.4 }}
+          className="mb-6"
         >
-          <Link
-            to="/"
-            className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:underline mb-6"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Research
-          </Link>
+          {/* Back link removed in embedded modal */}
           
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             Research Notes & Methodology
@@ -137,6 +41,38 @@ export default function ResearchNotes() {
             Detailed documentation of the research process, sources consulted, and methodology 
             used to develop the proposed solutions for Solana's state bloat problem.
           </p>
+        </motion.div>
+
+        {/* Top Claims with Inline Citations */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="card mb-12"
+        >
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8 flex items-center">
+            <FileText className="w-6 h-6 mr-3" />
+            Top Numerical Claims & Citations
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {topClaims.map((c) => (
+              <div key={c.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{c.label}</div>
+                <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                  {'value' in c ? `${c.value} ${c.unit}` : `${c.min}–${c.max} ${c.unit}`}
+                </div>
+                {c.note && (
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{c.note}</div>
+                )}
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 flex items-center justify-between">
+                  <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center hover:underline">
+                    <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
+                  </a>
+                  {c.fetched_at && <span>Fetched: {c.fetched_at}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
 
         {/* Research Methodology */}
@@ -152,7 +88,37 @@ export default function ResearchNotes() {
           </h2>
           
           <div className="space-y-8">
-            {methodology.map((step, index) => (
+            {[{
+              step: '1',
+              title: 'Problem Analysis',
+              description: 'Analyzed the baseline problem statement and identified key metrics that needed verification',
+              sources: ['Independent Research', 'Solana Documentation'],
+              outcome: 'Confirmed current state size, validator requirements, and operational costs'
+            }, {
+              step: '2',
+              title: 'Technical Research',
+              description: 'Researched existing solutions including SIMD-0341, Avocado project, and state compression',
+              sources: ['Solana GitHub', 'Official Documentation', 'Technical Guides'],
+              outcome: 'Identified limitations and areas for improvement in current approaches'
+            }, {
+              step: '3',
+              title: 'Comparative Analysis',
+              description: 'Analyzed how other blockchains handle state management and storage optimization',
+              sources: ['Stellar Documentation', 'Accumulate Research', 'Ethereum Guides'],
+              outcome: 'Identified best practices and lessons learned from other networks'
+            }, {
+              step: '4',
+              title: 'Solution Design',
+              description: 'Developed three comprehensive solutions based on research findings',
+              sources: ['All previous research', 'Technical feasibility analysis'],
+              outcome: 'Created detailed technical specifications and implementation plans'
+            }, {
+              step: '5',
+              title: 'Verification & Validation',
+              description: 'Cross-referenced all claims and data points with multiple sources',
+              sources: ['Multiple authoritative sources', 'Community discussions'],
+              outcome: 'Ensured accuracy and reliability of all presented information'
+            }].map((step, index) => (
               <motion.div
                 key={step.step}
                 initial={{ opacity: 0, x: -20 }}
@@ -227,6 +193,9 @@ export default function ResearchNotes() {
                       <Calendar className="w-4 h-4 mr-1" />
                       {entry.date}
                     </div>
+                    {entry.fetched_at && (
+                      <div className="text-xs text-gray-400 dark:text-gray-500">Fetched: {entry.fetched_at}</div>
+                    )}
                   </div>
                   <a
                     href={entry.url}
@@ -251,12 +220,14 @@ export default function ResearchNotes() {
                   </ul>
                 </div>
                 
-                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                  <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">Research Notes:</h4>
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
-                    {entry.notes}
-                  </p>
-                </div>
+                {entry.snippet && (
+                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">Source Snippet:</h4>
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                      {entry.snippet}
+                    </p>
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
@@ -322,11 +293,46 @@ export default function ResearchNotes() {
           <div className="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
             <h3 className="font-medium text-yellow-900 dark:text-yellow-100 mb-2">Research Limitations</h3>
             <p className="text-sm text-yellow-800 dark:text-yellow-200">
-              This research was conducted over a 9-day period in September 2025. While comprehensive, 
+              This research was conducted over a limited period in September 2025. While comprehensive, 
               the rapidly evolving nature of blockchain technology means some information may become 
               outdated. All sources were accessed and verified during the research period, but 
               readers should verify current information for time-sensitive decisions.
             </p>
+          </div>
+          
+          {/* Appendix */}
+          <div className="mt-8">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">Appendix: Excerpts & Artifacts</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Short excerpts from sources and downloadable research log.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <div className="text-sm font-medium mb-2">Selected Excerpts</div>
+                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                  {researchLog.slice(0,4).map((e, i) => (
+                    <li key={i}>
+                      <span className="font-medium">{e.source}:</span> {e.snippet ?? '—'}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <div className="text-sm font-medium mb-2">Download Research Log</div>
+                <button
+                  className="btn-secondary"
+                  onClick={() => {
+                    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = 'research-notes.json'
+                    a.click()
+                    URL.revokeObjectURL(url)
+                  }}
+                >
+                  Download JSON
+                </button>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

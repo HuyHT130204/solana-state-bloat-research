@@ -75,6 +75,14 @@ export default function Footer() {
                   About Researcher
                 </a>
               </li>
+              <li>
+                <Link
+                  to="/poc_demo"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                >
+                  PoC Demo
+                </Link>
+              </li>
             </ul>
           </div>
 

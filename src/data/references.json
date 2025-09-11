@@ -1,0 +1,244 @@
+{
+  "categories": [
+    {
+      "category": "Official Documentation",
+      "type": "Documentation",
+      "items": [
+        {
+          "title": "Solana State Compression Documentation",
+          "url": "https://docs.solana.com/developers/courses/state-compression/generalized-state-compression",
+          "description": "Official documentation on generalized state compression (Link verified during research)",
+          "type": "Documentation",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "SPL: State Compression (SPL Program Docs)",
+          "url": "https://spl.solana.com/state-compression",
+          "description": "SPL documentation for account/state compression primitives",
+          "type": "Documentation",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana GitHub Repository",
+          "url": "https://github.com/solana-labs/solana",
+          "description": "Source code and implementation details",
+          "type": "Source Code",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Soroban Docs: State Expiration & Storage Architecture",
+          "url": "https://developers.stellar.org/docs/soroban",
+          "description": "Official Soroban documentation covering state expiration, BucketList, and storage concepts",
+          "type": "Documentation",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Mina Protocol Docs: Recursive zk-SNARK Blockchain",
+          "url": "https://docs.minaprotocol.com/",
+          "description": "Official Mina documentation on recursive SNARKs and succinct chain (~22KB claim)",
+          "type": "Documentation",
+          "fetched_at": "2025-09-10"
+        }
+      ]
+    },
+    {
+      "category": "Technical Guides",
+      "type": "Technical Guide",
+      "items": [
+        {
+          "title": "Understanding Rent on Solana - QuickNode",
+          "url": "https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana",
+          "description": "Comprehensive guide to Solana rent system",
+          "type": "Technical Guide",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Helius Docs: Rent & Account Management",
+          "url": "https://docs.helius.dev/",
+          "description": "Operational documentation on rent-exempt, closure, and refunds",
+          "type": "Technical Guide",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana Full Node Complete Guide - GetBlock",
+          "url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+          "description": "Complete guide to running Solana full nodes",
+          "type": "Infrastructure Guide",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Ethereum Full Node vs Archive Node - QuickNode",
+          "url": "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node",
+          "description": "Comparison of Ethereum node types and storage requirements",
+          "type": "Comparison Guide",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "BNB Chain Research: Stateless/Expiry Discussions",
+          "url": "https://bnbchain.org/en/blog",
+          "description": "Research posts and proposals relevant to stateless clients and state expiry",
+          "type": "Technical Guide",
+          "fetched_at": "2025-09-10"
+        }
+      ]
+    },
+    {
+      "category": "Storage Solutions",
+      "type": "Storage Network",
+      "items": [
+        {
+          "title": "Arweave - Permanent Data Storage",
+          "url": "https://www.arweave.org",
+          "description": "Decentralized permanent storage network",
+          "type": "Storage Network",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Filecoin - Decentralized Storage",
+          "url": "https://filecoin.io",
+          "description": "Decentralized storage network and marketplace",
+          "type": "Storage Network",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Termina Data Anchor",
+          "url": "https://www.termina.technology/post/data-anchor",
+          "description": "Off-chain data anchoring solution",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        }
+      ]
+    },
+    {
+      "category": "Research & Analysis",
+      "type": "Research Article",
+      "items": [
+        {
+          "title": "Stellar Soroban: Solving State Bloat with State Expiration",
+          "url": "https://stellar.org/blog/developers/not-all-data-is-equal-how-soroban-is-solving-state-bloat-with-state-expiration",
+          "description": "How Stellar addresses state bloat through state expiration",
+          "type": "Research Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "HackMD: State Expiry & Stateless Client Notes",
+          "url": "https://hackmd.io/",
+          "description": "Community proposals and notes on expiry/stateless approaches",
+          "type": "Research Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana Avocado and Compression Trade-offs",
+          "url": "https://blockchain.news/news/avocado-solana-compression-overview",
+          "description": "Overview of Avocado compression design and potential network impacts",
+          "type": "Research Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Alpha AML: Solana Throughput and Ledger Growth Metrics",
+          "url": "https://wp.alpha-aml.com/",
+          "description": "Reported ledger size and growth comparisons vs. Ethereum/Bitcoin",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Dexter Labs: Solana State Growth Analysis (5–7 PB/yr)",
+          "url": "https://medium.com/@astralaneio/the-problems-with-solana-data-indexing-580ecb73c402",
+          "description": "Astralane cites DexterLab for 5–7 PB/year state data production",
+          "type": "Research Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Accumulate: Solving for State Bloat with Anchoring",
+          "url": "https://accumulate.org/2022/07/solving-for-state-bloat-with-anchoring",
+          "description": "Accumulate's approach to state bloat through data anchoring",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "The Defiant: Analyses on State Compression, Avocado, and DA Risks",
+          "url": "https://thedefiant.io/",
+          "description": "Commentary highlighting lack of protocol-level DA and compression-induced spam risks",
+          "type": "Research Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Blockchain.news: Stellar-style Deterministic Archival",
+          "url": "https://blockchain.news/",
+          "description": "Comparative analysis on archival strategies and Merkle segmentation",
+          "type": "Research Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana StackExchange: Off-chain metadata & compression patterns",
+          "url": "https://solana.stackexchange.com/",
+          "description": "Community Q&A on storing metadata off-chain and account compression practices",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        }
+      ]
+    },
+    {
+      "category": "Vendors & Data Providers",
+      "type": "Technical Guide",
+      "items": [
+        {
+          "title": "DexterLab Homepage",
+          "url": "https://dexterlab.com/",
+          "description": "Vendor profile and product overview for Solana data infrastructure",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Improving Solana Historical Data Accessibility",
+          "url": "https://dexterlab.com/improving-solana-historical-data-accessibility/",
+          "description": "Whitepaper-style guide on archival storage and HDFS/HBase patterns",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana RAW Data",
+          "url": "https://dexterlab.com/solana-raw-data/",
+          "description": "Volume estimates (~210k blocks/day ≈ nearly 1TB/day of raw data)",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana Real Time Data Streams",
+          "url": "https://dexterlab.com/solana-real-time-data-streams/",
+          "description": "Realtime streaming services and pricing",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Solana Archival RPC",
+          "url": "https://dexterlab.com/solana-archival-rpc/",
+          "description": "Archival RPC services; BigTable alternative approach",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        },
+        {
+          "title": "Alchemy Dapp Listing — DexterLab",
+          "url": "https://www.alchemy.com/dapps/dexterlab",
+          "description": "Industry profile of DexterLab on Alchemy",
+          "type": "Technical Article",
+          "fetched_at": "2025-09-10"
+        }
+      ]
+    },
+    {
+      "category": "Infrastructure & Hardware",
+      "type": "Hardware Guide",
+      "items": [
+        {
+          "title": "How to Host Solana Validator Node - ServerMania",
+          "url": "https://www.servermania.com/kb/articles/how-to-host-solana-validator-node",
+          "description": "Hardware requirements and setup guide for Solana validators",
+          "type": "Hardware Guide",
+          "fetched_at": "2025-09-10"
+        }
+      ]
+    }
+  ]
+}
+

@@ -50,6 +50,20 @@ const limitations = [
     description: 'Accessing compressed data requires computational overhead for decompression',
     impact: 'Medium',
     details: 'May introduce latency and increased transaction costs'
+  },
+  {
+    icon: AlertTriangle,
+    title: 'No Protocol-Level Data Availability (Avocado)',
+    description: 'After compression, only hashes/roots are retained on-chain; original account bytes are not protocol-preserved.',
+    impact: 'High',
+    details: 'If RPCs/indexers drop blobs, data can be irretrievably lost as there is no enforced DA layer. See: The Defiant analysis and Stellar community critiques.'
+  },
+  {
+    icon: AlertTriangle,
+    title: 'Spam & Recompression Side-Effects',
+    description: 'Frequent compress/decompress cycles may inflate transaction volume and network load.',
+    impact: 'Medium',
+    details: 'Rewritings and re-uploads increase bandwidth and can amplify mempool pressure; careful incentive design is required.'
   }
 ]
 
@@ -243,6 +257,8 @@ export default function SIMDReview() {
                 Sources: <a href="https://docs.solana.com/developers/courses/state-compression/generalized-state-compression" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Solana Docs</a>
                 <span className="mx-1">·</span>
                 <a href="https://www.helius.dev/blog/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Helius Blog</a>
+                <span className="mx-1">·</span>
+                <a href="https://thedefiant.io/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">The Defiant</a>
               </div>
             </div>
           </div>

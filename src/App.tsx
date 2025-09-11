@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
-import { DataProvider, useData } from './contexts/DataContext'
+import { DataProvider, useData } from './contexts/DataContext.tsx'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import ResearchNotes from './pages/ResearchNotes'
 // import { Toaster } from 'react-hot-toast'
+import { Suspense, lazy } from 'react'
+
+const PocDemo = lazy(() => import('./pages/PocDemo'))
 
 function AppContent() {
   const { isLoaded } = useData()
@@ -39,6 +42,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/research-notes" element={<ResearchNotes />} />
+          <Route path="/poc_demo" element={<Suspense fallback={null}><PocDemo /></Suspense>} />
         </Routes>
       </main>
       <Footer />

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Download, FileText, Loader } from 'lucide-react'
 // Defer heavy libraries until user clicks generate
@@ -6,13 +6,48 @@ import { Download, FileText, Loader } from 'lucide-react'
 export default function PDFExport() {
   const [isGenerating, setIsGenerating] = useState(false)
 
+  // Enable header "Download" button to trigger this component
+  useEffect(() => {
+    const handler = () => { void generatePDF() }
+    // @ts-ignore Custom event type not in local DOM typings
+    window.addEventListener('download-pdf', handler)
+    // Also expose a global trigger for Header to call directly
+    // @ts-ignore attach to window for cross-component trigger
+    window.generateResearchPDF = generatePDF
+    return () => {
+      // @ts-ignore Custom event type not in local DOM typings
+      window.removeEventListener('download-pdf', handler)
+      // @ts-ignore cleanup global
+      delete window.generateResearchPDF
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const generatePDF = async () => {
     setIsGenerating(true)
     
     try {
       const { default: jsPDF } = await import('jspdf')
       const { default: autoTable } = await import('jspdf-autotable')
-      // Create a new PDF document
+
+      // Load latest PoC artifacts to embed into the PDF
+      type BenchSummary = { merkle?: { avgSize?: number; avgTime?: number }; zk?: { avgSize?: number }; compression?: { avgSize?: number }; timestamp?: string }
+      type MerkleInfo = { root?: string; depth?: number; leafCount?: number }
+      type TxInfo = { tx?: string; explorer?: string }
+      let pocBench: BenchSummary | null = null
+      let pocMerkle: MerkleInfo | null = null
+      let pocTx: TxInfo | null = null
+      try {
+        const [b, m, t] = await Promise.all([
+          fetch('/poc/data/benchmark-summary.json').then((r) => r.ok ? r.json() : null),
+          fetch('/poc/data/merkle-trees.json').then((r) => r.ok ? r.json() : null),
+          fetch('/poc/artifacts/transaction-ids.json').then((r) => r.ok ? r.json() : null),
+        ])
+        pocBench = b
+        pocMerkle = m
+        pocTx = t
+      } catch { /* ignore and proceed */ }
+
       const pdf = new jsPDF('p', 'mm', 'a4')
       const pageWidth = pdf.internal.pageSize.getWidth()
       const pageHeight = pdf.internal.pageSize.getHeight()
@@ -88,6 +123,10 @@ export default function PDFExport() {
       pdf.text('Author: Huy Ho', margin, 82)
       pdf.text('Publication Date: September 2025', margin, 94)
       pdf.text('Research Period: September 1-9, 2025', margin, 106)
+      if (pocMerkle?.root) {
+        pdf.setFontSize(9)
+        pdf.text(`PoC Merkle Root: ${String(pocMerkle.root).slice(0, 64)}...`, margin, 118)
+      }
       
       // Add abstract on title page
       pdf.setFontSize(10)
@@ -117,7 +156,8 @@ export default function PDFExport() {
         '5. Migration Timeline & Implementation Strategy',
         '6. Blockchain Comparison & Lessons Learned',
         '7. References & Data Sources',
-        '8. Methodology & Source Verification'
+        '8. Methodology & Source Verification',
+        '9. PoC Artifacts & Benchmarks (Appendix)'
       ]
       
       toc.forEach((item) => {
@@ -530,6 +570,43 @@ Website: https://solana-state-bloat-research.vercel.app
 GitHub: https://github.com/solana-state-bloat-research`
       
       yPos = addTextWithPageBreak(citationInfo, yPos)
+
+      // APPENDIX: POC ARTIFACTS
+      pdf.addPage()
+      yPos = addSectionHeader('9. PoC Artifacts & Benchmarks (Appendix)', 20)
+      const appendixIntro = `This appendix captures live PoC outputs bundled with the site for verification. It includes the Merkle root and proofs, benchmark summary metrics, and any published devnet anchor transaction if available.`
+      yPos = addTextWithPageBreak(appendixIntro, yPos)
+
+      // Key PoC metrics
+      if (pocBench) {
+        yPos = addSubsectionHeader('9.1 Benchmark Summary', yPos)
+        const rows: string[][] = []
+        if (pocBench?.merkle) {
+          rows.push(['Merkle avg proof size (bytes)', String(pocBench.merkle.avgSize)])
+          rows.push(['Merkle avg verify time (s)', String(pocBench.merkle.avgTime)])
+        }
+        if (pocBench?.zk) rows.push(['ZK avg proof size (bytes)', String(pocBench.zk.avgSize)])
+        if (pocBench?.compression) rows.push(['Compression ratio (avg x)', String(pocBench.compression.avgSize)])
+        if (rows.length > 0) yPos = addTable(['Metric', 'Value'], rows, yPos)
+      }
+
+      // Merkle data
+      if (pocMerkle) {
+        yPos = addSubsectionHeader('9.2 Merkle Tree Info', yPos)
+        const merkleRows: string[][] = []
+        if (pocMerkle.root) merkleRows.push(['Root', String(pocMerkle.root)])
+        if (pocMerkle.depth !== undefined) merkleRows.push(['Depth', String(pocMerkle.depth)])
+        if (pocMerkle.leafCount !== undefined) merkleRows.push(['Leaf count', String(pocMerkle.leafCount)])
+        if (merkleRows.length > 0) yPos = addTable(['Field', 'Value'], merkleRows, yPos)
+      }
+
+      // Anchor transaction link
+      if (pocTx?.tx) {
+        yPos = addSubsectionHeader('9.3 Devnet Anchor Transaction', yPos)
+        const link = `https://explorer.solana.com/tx/${pocTx.tx}?cluster=devnet`
+        yPos = addTextWithPageBreak(`Tx: ${pocTx.tx}`, yPos)
+        yPos = addTextWithPageBreak(`Explorer: ${link}`, yPos)
+      }
       
       // Save the PDF
       pdf.save('solana-state-bloat-research-comprehensive-2025.pdf')

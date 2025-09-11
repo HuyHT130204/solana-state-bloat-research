@@ -1,110 +1,7 @@
 import { motion } from 'framer-motion'
 import { ExternalLink, FileText, Github, Globe, BookOpen, Users } from 'lucide-react'
-
-const references = [
-  {
-    category: 'Official Documentation',
-    icon: FileText,
-    items: [
-      {
-        title: 'Solana State Compression Documentation',
-        url: 'https://docs.solana.com/developers/courses/state-compression/generalized-state-compression',
-        description: 'Official documentation on generalized state compression (Link verified as non-functional during research period)',
-        type: 'Documentation'
-      },
-      {
-        title: 'Solana GitHub Repository',
-        url: 'https://github.com/solana-labs/solana',
-        description: 'Source code and implementation details',
-        type: 'Source Code'
-      }
-    ]
-  },
-  {
-    category: 'Technical Guides',
-    icon: BookOpen,
-    items: [
-      {
-        title: 'Understanding Rent on Solana - QuickNode',
-        url: 'https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana',
-        description: 'Comprehensive guide to Solana rent system',
-        type: 'Technical Guide'
-      },
-      {
-        title: 'Solana Full Node Complete Guide - GetBlock',
-        url: 'https://getblock.io/blog/solana-full-node-complete-guide/',
-        description: 'Complete guide to running Solana full nodes',
-        type: 'Infrastructure Guide'
-      },
-      {
-        title: 'Ethereum Full Node vs Archive Node - QuickNode',
-        url: 'https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node',
-        description: 'Comparison of Ethereum node types and storage requirements',
-        type: 'Comparison Guide'
-      }
-    ]
-  },
-  {
-    category: 'Storage Solutions',
-    icon: Globe,
-    items: [
-      {
-        title: 'Arweave - Permanent Data Storage',
-        url: 'https://www.arweave.org',
-        description: 'Decentralized permanent storage network',
-        type: 'Storage Network'
-      },
-      {
-        title: 'Filecoin - Decentralized Storage',
-        url: 'https://filecoin.io',
-        description: 'Decentralized storage network and marketplace',
-        type: 'Storage Network'
-      },
-      {
-        title: 'Termina Data Anchor',
-        url: 'https://www.termina.technology/post/data-anchor',
-        description: 'Off-chain data anchoring solution',
-        type: 'Technical Article'
-      }
-    ]
-  },
-  {
-    category: 'Research & Analysis',
-    icon: Users,
-    items: [
-      {
-        title: 'Stellar Soroban: Solving State Bloat with State Expiration',
-        url: 'https://stellar.org/blog/developers/not-all-data-is-equal-how-soroban-is-solving-state-bloat-with-state-expiration',
-        description: 'How Stellar addresses state bloat through state expiration',
-        type: 'Research Article'
-      },
-      {
-        title: 'Accumulate: Solving for State Bloat with Anchoring',
-        url: 'https://accumulate.org/2022/07/solving-for-state-bloat-with-anchoring',
-        description: 'Accumulate\'s approach to state bloat through data anchoring',
-        type: 'Technical Article'
-      },
-      {
-        title: 'Stellar: Scalability with State Archival vs Solana\'s Avocado',
-        url: 'https://stellar.org/blog/developers/introducing-state-archival-part-2-scalability-vs-solana-s-avocado',
-        description: 'Comparative analysis of state archival approaches',
-        type: 'Research Article'
-      }
-    ]
-  },
-  {
-    category: 'Infrastructure & Hardware',
-    icon: Github,
-    items: [
-      {
-        title: 'How to Host Solana Validator Node - ServerMania',
-        url: 'https://www.servermania.com/kb/articles/how-to-host-solana-validator-node',
-        description: 'Hardware requirements and setup guide for Solana validators',
-        type: 'Hardware Guide'
-      }
-    ]
-  }
-]
+import type { ComponentType } from 'react'
+import refs from '../../data/references.json'
 
 const typeColors = {
   'Documentation': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -118,7 +15,35 @@ const typeColors = {
   'Hardware Guide': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
 }
 
+type ReferenceItem = {
+  title: string
+  url: string
+  description: string
+  type: keyof typeof typeColors | string
+  fetched_at?: string
+}
+
+type ReferenceCategory = {
+  category: string
+  type: string
+  items: ReferenceItem[]
+}
+
+type ReferencesJson = {
+  categories: ReferenceCategory[]
+}
+
+type IconComponent = ComponentType<{ className?: string }>
+const iconMap: Record<string, IconComponent> = {
+  'Official Documentation': FileText,
+  'Technical Guides': BookOpen,
+  'Storage Solutions': Globe,
+  'Research & Analysis': Users,
+  'Infrastructure & Hardware': Github,
+}
+
 export default function References() {
+  const data = refs as ReferencesJson
   return (
     <section id="references" className="section-padding bg-gray-50 dark:bg-gray-800">
       <div className="container-max">
@@ -139,8 +64,8 @@ export default function References() {
         </motion.div>
 
         {/* References by Category */}
-        {references.map((category, categoryIndex) => {
-          const Icon = category.icon
+        {data.categories.map((category, categoryIndex) => {
+          const Icon = iconMap[category.category] ?? FileText
           return (
             <motion.div
               key={category.category}
@@ -172,7 +97,7 @@ export default function References() {
                         <h4 className="font-medium text-gray-900 dark:text-gray-100">
                           {item.title}
                         </h4>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${typeColors[item.type as keyof typeof typeColors]}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${typeColors[item.type as keyof typeof typeColors] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'}`}>
                           {item.type}
                         </span>
                       </div>
@@ -182,6 +107,9 @@ export default function References() {
                       <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                         {item.url}
                       </p>
+                      {item.fetched_at && (
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Fetched: {item.fetched_at}</p>
+                      )}
                     </div>
                     <a
                       href={item.url}
@@ -265,7 +193,7 @@ export default function References() {
             <div>
               <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Data Collection Period</h4>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                Research conducted from September 1-9, 2025. All sources were accessed and verified 
+                Research conducted from September 1-10, 2025. All sources were accessed and verified 
                 during this period to ensure accuracy and currency of information.
               </p>
             </div>

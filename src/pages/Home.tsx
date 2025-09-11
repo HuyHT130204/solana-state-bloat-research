@@ -8,8 +8,14 @@ import MigrationTimeline from '../components/sections/MigrationTimeline'
 import BlockchainComparison from '../components/sections/BlockchainComparison'
 import AboutResearcher from '../components/sections/AboutResearcher'
 import References from '../components/sections/References'
+import SolutionPlaybook from '../components/sections/SolutionPlaybook'
+import SyscallSpec from '../components/sections/SyscallSpec'
+import StorageEconomics from '../components/sections/StorageEconomics'
+import PilotPartners from '../components/sections/PilotPartners'
+import SecurityAppendix from '../components/sections/SecurityAppendix'
 import PDFExport from '../components/PDFExport'
 import ScrollToTop from '../components/ScrollToTop'
+import FloatingActions from '../components/FloatingActions'
 
 export default function Home() {
   useEffect(() => {
@@ -36,12 +42,18 @@ export default function Home() {
       <QuantitativeDashboard />
       <SIMDReview />
       <ProposedSolutions />
+      <SyscallSpec />
+      <StorageEconomics />
+      <PilotPartners />
+      <SecurityAppendix />
+      <SolutionPlaybook />
       <MigrationTimeline />
       <BlockchainComparison />
       <AboutResearcher />
       <References />
       <PDFExport />
       <ScrollToTop />
+      <FloatingActions />
     </div>
   )
 }

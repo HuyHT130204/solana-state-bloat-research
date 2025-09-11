@@ -1,0 +1,802 @@
+[
+  {
+    "id": "2fee027aa7a6f1d5c39d0273224abfbdef65f2941a3f483137c280b11d474a20",
+    "type": "compression",
+    "timestamp": "2025-09-10T16:23:50.394Z",
+    "accountCount": 6,
+    "proofSize": 563,
+    "computeUnits": 66521
+  },
+  {
+    "id": "e02036a1f1ea081666d13098cfb42853bdace8f66c2926e9b9cbdef1c3d7ffcc",
+    "type": "compression",
+    "timestamp": "2025-09-11T04:44:12.386Z",
+    "accountCount": 1,
+    "proofSize": 685,
+    "computeUnits": 96609
+  },
+  {
+    "id": "e1f3d4e35346d430de71ec6c34bb027325cdb428c145a293b11083a5562ab2fd",
+    "type": "compression",
+    "timestamp": "2025-09-10T17:58:47.184Z",
+    "accountCount": 1,
+    "proofSize": 1059,
+    "computeUnits": 70023
+  },
+  {
+    "id": "7569a2ca7d2df56a85cf3e02a889cc9a15fe450c4dfeb59a8a2733cd9718d8f5",
+    "type": "compression",
+    "timestamp": "2025-09-10T20:28:37.098Z",
+    "accountCount": 9,
+    "proofSize": 680,
+    "computeUnits": 96724
+  },
+  {
+    "id": "c15b9c08c83161411c33afd270350bc0c2772ab11a28e81d1e2e4825aa66087f",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:19:25.401Z",
+    "accountCount": 8,
+    "proofSize": 1440,
+    "computeUnits": 84365
+  },
+  {
+    "id": "a98e53b581bf761c4e5df068f06b5f7791e1221ef743708ed00173b8d44e7d83",
+    "type": "compression",
+    "timestamp": "2025-09-10T15:56:01.423Z",
+    "accountCount": 7,
+    "proofSize": 937,
+    "computeUnits": 30553
+  },
+  {
+    "id": "6403fcf4bc947561e88cfc68b0516f2da67705dc61b40217f233c4c566053363",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:27:45.332Z",
+    "accountCount": 3,
+    "proofSize": 690,
+    "computeUnits": 23939
+  },
+  {
+    "id": "07ff6ed4c0296a19d34c5119e29cb79cca1b7fb8e5c55680414b046c7b944e90",
+    "type": "compression",
+    "timestamp": "2025-09-10T12:32:44.653Z",
+    "accountCount": 3,
+    "proofSize": 1274,
+    "computeUnits": 107104
+  },
+  {
+    "id": "5e2ec43a352b9488f4f02be92fd3a4cb597e336c4f9060d5b54cb9433ca04f0c",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:51:44.801Z",
+    "accountCount": 8,
+    "proofSize": 979,
+    "computeUnits": 53784
+  },
+  {
+    "id": "371ee9352e094ebee3fdc7b4698fac541973f86396330bedfcd8b770a3532220",
+    "type": "compression",
+    "timestamp": "2025-09-10T14:40:22.296Z",
+    "accountCount": 2,
+    "proofSize": 1085,
+    "computeUnits": 74907
+  },
+  {
+    "id": "463742b57e608a9f41f30bc92101f2199fe34b24f9c5d0245d0965f1a23e8c52",
+    "type": "compression",
+    "timestamp": "2025-09-11T00:02:47.489Z",
+    "accountCount": 9,
+    "proofSize": 1238,
+    "computeUnits": 81567
+  },
+  {
+    "id": "ef2028f4bab60c8a625d95358cc92403d336f72f0d27ebccda89846fadf96d49",
+    "type": "compression",
+    "timestamp": "2025-09-10T19:49:50.996Z",
+    "accountCount": 7,
+    "proofSize": 735,
+    "computeUnits": 28398
+  },
+  {
+    "id": "0a615731566f956ccff8ad98806904e2bf0eb91edc51707e448fe3134e656568",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:23:13.030Z",
+    "accountCount": 3,
+    "proofSize": 566,
+    "computeUnits": 43663
+  },
+  {
+    "id": "3386f8e55464ad8965029fe3c4d56d51930adaac4b643e43b4c07125c32d4062",
+    "type": "compression",
+    "timestamp": "2025-09-11T01:44:25.095Z",
+    "accountCount": 2,
+    "proofSize": 1169,
+    "computeUnits": 40197
+  },
+  {
+    "id": "a57e4bf624c51e9acec6576bde9ab7220e36b7af16d7c7302401d1ac101150e8",
+    "type": "compression",
+    "timestamp": "2025-09-11T04:46:38.617Z",
+    "accountCount": 4,
+    "proofSize": 1429,
+    "computeUnits": 110173
+  },
+  {
+    "id": "cc589aa1f11cae9552bda89153b91e4c0c85fc9cd4ad6a0b3bac7113c00a46dd",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:46:55.378Z",
+    "accountCount": 10,
+    "proofSize": 1301,
+    "computeUnits": 78847
+  },
+  {
+    "id": "ddf33d78bebda71ae739b7c8af680852a0ef405dadd06cdded833f28cc486638",
+    "type": "compression",
+    "timestamp": "2025-09-10T08:54:40.692Z",
+    "accountCount": 6,
+    "proofSize": 1194,
+    "computeUnits": 21885
+  },
+  {
+    "id": "2f2dd580733a8c1e11359a641a0ea354f9dd9e1d2e2fd527e2bbe9b3a430b7cf",
+    "type": "compression",
+    "timestamp": "2025-09-10T22:06:31.972Z",
+    "accountCount": 9,
+    "proofSize": 1164,
+    "computeUnits": 24829
+  },
+  {
+    "id": "fa9ef8d61b054e76923f31aa0461469f95b45d678480cb46ab7cdd4d6d25d4a9",
+    "type": "compression",
+    "timestamp": "2025-09-11T06:59:33.992Z",
+    "accountCount": 1,
+    "proofSize": 1480,
+    "computeUnits": 111825
+  },
+  {
+    "id": "8d75a5360d625905e023db924f19795673c2779fec24599370f57c3481c2653a",
+    "type": "compression",
+    "timestamp": "2025-09-10T15:46:49.116Z",
+    "accountCount": 4,
+    "proofSize": 668,
+    "computeUnits": 37953
+  },
+  {
+    "id": "14392c3436c8f777a2e2cc49ac29615a5021cadca4bf07fdf2b0c1a1651f0a4d",
+    "type": "compression",
+    "timestamp": "2025-09-10T09:47:08.972Z",
+    "accountCount": 9,
+    "proofSize": 805,
+    "computeUnits": 99201
+  },
+  {
+    "id": "623c675ac165cb543a2f14944b6ee45b2d68d5db9ec3322b71917a080a2770da",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:09:29.851Z",
+    "accountCount": 6,
+    "proofSize": 1302,
+    "computeUnits": 25923
+  },
+  {
+    "id": "fdfa5acfa7e24775dbf4691e2a9652ce78d88fe888cde17f845587aa406fb86b",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:59:39.403Z",
+    "accountCount": 5,
+    "proofSize": 637,
+    "computeUnits": 62207
+  },
+  {
+    "id": "f3c1b5b514fd8eaafc30d57df0d789f2fde7aa2add2c2f424f7c2ed4cd7bf88a",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:04:45.897Z",
+    "accountCount": 5,
+    "proofSize": 597,
+    "computeUnits": 35197
+  },
+  {
+    "id": "33c9e7da62ba6b2930eea0086c8ada5f7ce3c78988c2d92c59aba9d9d4ff232b",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:53:50.825Z",
+    "accountCount": 7,
+    "proofSize": 784,
+    "computeUnits": 39343
+  },
+  {
+    "id": "25e5c4fc6b7fed74a7494e5d7d3506939f740892ced554db62166797504e41a8",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:39:48.373Z",
+    "accountCount": 3,
+    "proofSize": 655,
+    "computeUnits": 40495
+  },
+  {
+    "id": "f3c283261f97dda20f2e6724ba6ad25cae3173fb73d0a4683f51b7da68407a7f",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:19:46.708Z",
+    "accountCount": 8,
+    "proofSize": 709,
+    "computeUnits": 115671
+  },
+  {
+    "id": "bdaf9d03542d6cfb8b46cd69ddd5dd15152a19ba046473c7a2abe1537fc68f3c",
+    "type": "compression",
+    "timestamp": "2025-09-10T21:01:03.591Z",
+    "accountCount": 6,
+    "proofSize": 1237,
+    "computeUnits": 111532
+  },
+  {
+    "id": "fe23384608dd6f08b97a47bbdda631699ea3beccbfaa2724f1d7010962f35c74",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:15:10.689Z",
+    "accountCount": 6,
+    "proofSize": 677,
+    "computeUnits": 68570
+  },
+  {
+    "id": "8d4cf5dbb506b24ebac45b1d96a20cf2962bcce390636321e614be48d2c89514",
+    "type": "compression",
+    "timestamp": "2025-09-10T16:07:29.957Z",
+    "accountCount": 5,
+    "proofSize": 791,
+    "computeUnits": 46728
+  },
+  {
+    "id": "9a031d66c2970564469b387a86dacb44dd98f68632db99e814f116b683b41527",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:27:19.994Z",
+    "accountCount": 5,
+    "proofSize": 781,
+    "computeUnits": 92789
+  },
+  {
+    "id": "f6f028e0629bb1f376b4e003dfa412a815f92de3a0a61424058d8328c26ae44b",
+    "type": "compression",
+    "timestamp": "2025-09-11T02:49:21.318Z",
+    "accountCount": 10,
+    "proofSize": 668,
+    "computeUnits": 20545
+  },
+  {
+    "id": "1c1250579e346ccc1dc2f62fb5ec7b58a23a47c9eaac6dc7b529eb10b265e0c7",
+    "type": "compression",
+    "timestamp": "2025-09-11T06:18:38.830Z",
+    "accountCount": 5,
+    "proofSize": 1118,
+    "computeUnits": 77921
+  },
+  {
+    "id": "61b548070c7f80ef2d02a9a0c4aa3b5ffcee5757c348790b6de40b3d51c0bb90",
+    "type": "compression",
+    "timestamp": "2025-09-11T02:59:03.226Z",
+    "accountCount": 7,
+    "proofSize": 798,
+    "computeUnits": 22299
+  },
+  {
+    "id": "56d7e149df0ca4f8359b6460ae5eaa643059f6dcd04f90b474c7d3502cb82728",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:53:25.088Z",
+    "accountCount": 7,
+    "proofSize": 1198,
+    "computeUnits": 57807
+  },
+  {
+    "id": "ae65fb4c539f587b5943b3e538338b988c9727b9d1b8b9aa595c373c258a00e0",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:47:09.246Z",
+    "accountCount": 5,
+    "proofSize": 1320,
+    "computeUnits": 61735
+  },
+  {
+    "id": "6c7589e66baf3e68956f042de1ea0ab012271ce4e6730959099a67dbe361e9cb",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:22:36.296Z",
+    "accountCount": 1,
+    "proofSize": 937,
+    "computeUnits": 93682
+  },
+  {
+    "id": "7c2d981915502c966d73c46537ba28028e7e0f3e49a11615c15494ea535d0e79",
+    "type": "compression",
+    "timestamp": "2025-09-10T11:14:10.837Z",
+    "accountCount": 9,
+    "proofSize": 1140,
+    "computeUnits": 62985
+  },
+  {
+    "id": "24a15d69c00fe16feaf3412263287317b7bb7730b12cafb6a2b62a99d27d6935",
+    "type": "compression",
+    "timestamp": "2025-09-10T21:20:33.585Z",
+    "accountCount": 7,
+    "proofSize": 626,
+    "computeUnits": 59816
+  },
+  {
+    "id": "602e055518fcd1fe9ac2cc2906409305e4655c2a2c15411e73e14d0fe5439e2b",
+    "type": "compression",
+    "timestamp": "2025-09-10T17:57:46.373Z",
+    "accountCount": 5,
+    "proofSize": 847,
+    "computeUnits": 108929
+  },
+  {
+    "id": "4362e0a9c950bc1f8f853124732cda58e45d0852ae395f767596fa417a817a25",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:20:16.464Z",
+    "accountCount": 2,
+    "proofSize": 1449,
+    "computeUnits": 115014
+  },
+  {
+    "id": "56d67f62bf9f177655e02f88dccfce87947e15325c2b8f9d3d325bea5eae5c5b",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:32:50.897Z",
+    "accountCount": 4,
+    "proofSize": 1279,
+    "computeUnits": 91757
+  },
+  {
+    "id": "bc53b4946754586f1e210094af538c7785ecc6afaaeeacdae9b444617df4d6df",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:54:23.404Z",
+    "accountCount": 5,
+    "proofSize": 517,
+    "computeUnits": 76859
+  },
+  {
+    "id": "87d56a6a35130f6f74073aef5bd080ce4c512479d10d4525ab3463b0a6707e47",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:31:27.944Z",
+    "accountCount": 7,
+    "proofSize": 879,
+    "computeUnits": 27755
+  },
+  {
+    "id": "2d7ae818a3ada6a3e0859f533467a3892c37d2a7de59c003b3e33ff0b94510f0",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:47:12.504Z",
+    "accountCount": 7,
+    "proofSize": 1007,
+    "computeUnits": 52331
+  },
+  {
+    "id": "014886f92eb70c85cac8e4ff649d84fce1b9ec55a935f2a4d0680065dbfe14fc",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:42:17.953Z",
+    "accountCount": 5,
+    "proofSize": 936,
+    "computeUnits": 91072
+  },
+  {
+    "id": "8131cca97448540b1cde32b36191cefa3f41971ac3665a54adac96b4912c55cb",
+    "type": "compression",
+    "timestamp": "2025-09-10T22:38:55.658Z",
+    "accountCount": 4,
+    "proofSize": 596,
+    "computeUnits": 85448
+  },
+  {
+    "id": "66203237aa77b52091b5dfc45cc36d25d3c225e1d34abe74523531e309bd06cf",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:30:18.928Z",
+    "accountCount": 4,
+    "proofSize": 1274,
+    "computeUnits": 91489
+  },
+  {
+    "id": "361a8b83250f63b75b998ab9e4ca4707606273e35fdfc1fc3199cbeaf69576a7",
+    "type": "compression",
+    "timestamp": "2025-09-10T15:47:55.765Z",
+    "accountCount": 4,
+    "proofSize": 1380,
+    "computeUnits": 53383
+  },
+  {
+    "id": "9de3f30324ebe21110a6d83d9c22aad9a9dfe0cf8c212bf376547c6ed5c72a98",
+    "type": "compression",
+    "timestamp": "2025-09-10T13:50:27.923Z",
+    "accountCount": 6,
+    "proofSize": 1321,
+    "computeUnits": 85882
+  },
+  {
+    "id": "46b1d2d9331f23144c95ed71420e971a8bbb0cc5f55427776d964a1ca8326173",
+    "type": "compression",
+    "timestamp": "2025-09-10T19:18:29.849Z",
+    "accountCount": 4,
+    "proofSize": 698,
+    "computeUnits": 68184
+  },
+  {
+    "id": "a5ce111d6f168c4ec2ea670ec7c3ee7c265cbd6d8ab96a74edd63b89712dcd33",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:09:42.982Z",
+    "accountCount": 2,
+    "proofSize": 1369,
+    "computeUnits": 57725
+  },
+  {
+    "id": "cc94d8ce358b4b1f1560740673b2da61903e268d7d393bb05adc215e1e324729",
+    "type": "compression",
+    "timestamp": "2025-09-10T22:13:18.717Z",
+    "accountCount": 5,
+    "proofSize": 586,
+    "computeUnits": 53288
+  },
+  {
+    "id": "97b98cd2d59be662dc52d90e34fb27fabad9ff42b70b3c515a6c507f6216e0c9",
+    "type": "compression",
+    "timestamp": "2025-09-10T22:33:36.384Z",
+    "accountCount": 7,
+    "proofSize": 797,
+    "computeUnits": 43840
+  },
+  {
+    "id": "68390fb0123566fff94a3998e1006331218490810ba53648d028fe67529388e1",
+    "type": "compression",
+    "timestamp": "2025-09-11T06:46:23.257Z",
+    "accountCount": 5,
+    "proofSize": 1290,
+    "computeUnits": 111998
+  },
+  {
+    "id": "0ff42c38b62a1f6d1a9988d853c9b4485a8dc889854ee902e6947c1883f13af8",
+    "type": "compression",
+    "timestamp": "2025-09-10T17:32:03.409Z",
+    "accountCount": 3,
+    "proofSize": 1204,
+    "computeUnits": 84845
+  },
+  {
+    "id": "4d7abe7874d6f5b0897be2187731df0421013dacd10154acbe3fbc8650a8881b",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:56:32.680Z",
+    "accountCount": 10,
+    "proofSize": 1059,
+    "computeUnits": 51058
+  },
+  {
+    "id": "260af7fb188bda3901bb00ace04f1280ae93abd53af806ba092d3fe12cae2cb4",
+    "type": "compression",
+    "timestamp": "2025-09-10T12:22:21.646Z",
+    "accountCount": 10,
+    "proofSize": 935,
+    "computeUnits": 118381
+  },
+  {
+    "id": "3aedbe5c4bc82e1a8dec960a536c055f03922c6b70c31b1097997655eb01c2ca",
+    "type": "compression",
+    "timestamp": "2025-09-10T12:30:20.167Z",
+    "accountCount": 4,
+    "proofSize": 932,
+    "computeUnits": 93847
+  },
+  {
+    "id": "e75b79e3d594cd8ce58890a284ed685da15fe783c803645a58e71f0f192bbe48",
+    "type": "compression",
+    "timestamp": "2025-09-10T15:40:32.883Z",
+    "accountCount": 9,
+    "proofSize": 719,
+    "computeUnits": 79186
+  },
+  {
+    "id": "0ddf9d14f7400d13453c67ebac12c4d002e60b85ce07cf8d208fce61ef512e6a",
+    "type": "compression",
+    "timestamp": "2025-09-10T19:12:36.146Z",
+    "accountCount": 4,
+    "proofSize": 1090,
+    "computeUnits": 52459
+  },
+  {
+    "id": "075a46e378fb080933df462a2c7f5b091142774367eb830e52945be90f8f8e88",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:06:19.354Z",
+    "accountCount": 9,
+    "proofSize": 1203,
+    "computeUnits": 48849
+  },
+  {
+    "id": "0402b66f2df4b9cf5d2e177ddf3a5329fa8ea6b9d533604363b4d8dc508e5076",
+    "type": "compression",
+    "timestamp": "2025-09-10T14:19:01.875Z",
+    "accountCount": 2,
+    "proofSize": 1319,
+    "computeUnits": 24630
+  },
+  {
+    "id": "cea84be76d403781428ef40fbe79e1d53876b8df4f3397a8a8c30bf798dae9ae",
+    "type": "compression",
+    "timestamp": "2025-09-10T15:49:04.737Z",
+    "accountCount": 5,
+    "proofSize": 1380,
+    "computeUnits": 93288
+  },
+  {
+    "id": "75bf1d4c8eb3d85c270b39158bf78ff34fb912ee21067653722381435a15ba29",
+    "type": "compression",
+    "timestamp": "2025-09-11T01:47:13.184Z",
+    "accountCount": 7,
+    "proofSize": 961,
+    "computeUnits": 32042
+  },
+  {
+    "id": "f4d43db8cba3c983a5b2f8e8c151deee6b219ef6e3827db97881a42fc22a7274",
+    "type": "compression",
+    "timestamp": "2025-09-11T01:46:12.093Z",
+    "accountCount": 6,
+    "proofSize": 1386,
+    "computeUnits": 68087
+  },
+  {
+    "id": "71232f1a32137d13928964d7ce83824fc45b287d977dfe532b8f1d228511a2ed",
+    "type": "compression",
+    "timestamp": "2025-09-11T06:19:54.933Z",
+    "accountCount": 7,
+    "proofSize": 1262,
+    "computeUnits": 95027
+  },
+  {
+    "id": "89160eb8bc867e73a0ce4839e0e656cfc13901fb771092e6f2e58b21d0ca784d",
+    "type": "compression",
+    "timestamp": "2025-09-11T03:21:38.541Z",
+    "accountCount": 10,
+    "proofSize": 646,
+    "computeUnits": 61943
+  },
+  {
+    "id": "2484b414105dedc2daaacef322bd4d4a05eca85069567cf2685a8dbd8bdbef11",
+    "type": "compression",
+    "timestamp": "2025-09-10T13:40:28.564Z",
+    "accountCount": 1,
+    "proofSize": 834,
+    "computeUnits": 117059
+  },
+  {
+    "id": "0cf013b2e6e5757923cef8cbe6b6acce7c04a8bb981cfd525b9565c8f326630f",
+    "type": "compression",
+    "timestamp": "2025-09-10T22:38:30.990Z",
+    "accountCount": 1,
+    "proofSize": 1161,
+    "computeUnits": 95482
+  },
+  {
+    "id": "40807cf9b6abc3388f2c5d6e7e2a1d3a1ffb70d897d6c015de1026076422aa02",
+    "type": "compression",
+    "timestamp": "2025-09-10T12:49:23.274Z",
+    "accountCount": 1,
+    "proofSize": 1054,
+    "computeUnits": 22301
+  },
+  {
+    "id": "f20b65a3e94a354cd3d1ed9cc9242bfc8162c07696bb7b582a1578270b2c507c",
+    "type": "compression",
+    "timestamp": "2025-09-11T04:35:16.451Z",
+    "accountCount": 8,
+    "proofSize": 1188,
+    "computeUnits": 82183
+  },
+  {
+    "id": "527c7c7a9c81ace95734b6cf290db1f018a9c1438474923e418a4a9a735851ad",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:51:56.624Z",
+    "accountCount": 3,
+    "proofSize": 1087,
+    "computeUnits": 61663
+  },
+  {
+    "id": "c83fb0bfd1102f74c706d671aff44c165808d96a888d360e25a32e514bf3ed8e",
+    "type": "compression",
+    "timestamp": "2025-09-10T14:12:33.485Z",
+    "accountCount": 6,
+    "proofSize": 1009,
+    "computeUnits": 105425
+  },
+  {
+    "id": "2671f06c7a9d1d6cf9403656f9cff88d8120d3fb463da9399b80382f82c2bed0",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:57:33.137Z",
+    "accountCount": 7,
+    "proofSize": 623,
+    "computeUnits": 109380
+  },
+  {
+    "id": "28e2c6bade5d975e7768a09fd260fc0ec8669c21903bbf2456a388743fe77744",
+    "type": "compression",
+    "timestamp": "2025-09-11T03:04:44.809Z",
+    "accountCount": 6,
+    "proofSize": 1315,
+    "computeUnits": 50425
+  },
+  {
+    "id": "005b39befaec00887f39a3fcd1056b14f0914cd51c73d336111947880e0f78c2",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:36:40.709Z",
+    "accountCount": 10,
+    "proofSize": 666,
+    "computeUnits": 62757
+  },
+  {
+    "id": "697f62c9de82b16d5c07ef54ba73e6848849939b7de56f7a3c65c227e2cbf9d7",
+    "type": "compression",
+    "timestamp": "2025-09-11T06:31:59.961Z",
+    "accountCount": 4,
+    "proofSize": 1087,
+    "computeUnits": 40427
+  },
+  {
+    "id": "623cab5e5df72261d471a0ad8b2ef427b12b01fd38a6b56eff5b2751c9d08500",
+    "type": "compression",
+    "timestamp": "2025-09-11T00:21:57.588Z",
+    "accountCount": 4,
+    "proofSize": 923,
+    "computeUnits": 92855
+  },
+  {
+    "id": "83d752a7b0be2220b85c4a6dae293834aad867725e3096f1ecdd8f46f4397552",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:04:18.629Z",
+    "accountCount": 3,
+    "proofSize": 759,
+    "computeUnits": 33725
+  },
+  {
+    "id": "fb9ea0e23e41ccc81fb52fe376bc7c79e9277b3739ffa1ad45ac9c45db930d73",
+    "type": "compression",
+    "timestamp": "2025-09-10T11:50:12.282Z",
+    "accountCount": 7,
+    "proofSize": 750,
+    "computeUnits": 94722
+  },
+  {
+    "id": "335da031c45e5a173fcba7fbddf47bc8a5a1e93fc248fb2ac2f2754ad824bbfc",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:50:42.584Z",
+    "accountCount": 9,
+    "proofSize": 895,
+    "computeUnits": 80542
+  },
+  {
+    "id": "0ebb7923aa6c006ef414aa643b1b258ae74488b50d335ce2187132a5172eef85",
+    "type": "compression",
+    "timestamp": "2025-09-11T00:03:10.672Z",
+    "accountCount": 9,
+    "proofSize": 1122,
+    "computeUnits": 43808
+  },
+  {
+    "id": "4d280917376c7723be9dcf20088a4ae77da7281bb531390bf0a7706d99a77b49",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:05:17.733Z",
+    "accountCount": 9,
+    "proofSize": 1319,
+    "computeUnits": 80011
+  },
+  {
+    "id": "d47049b22ff53fcd0895fd05fd9b48c94c3b409425ed21cb0dcc313ac9cb36de",
+    "type": "compression",
+    "timestamp": "2025-09-11T04:56:29.804Z",
+    "accountCount": 10,
+    "proofSize": 722,
+    "computeUnits": 34288
+  },
+  {
+    "id": "ca5413fc1154673aff36081a67e864ec1dbcf0b940e1c3325613ea8e5edf9792",
+    "type": "compression",
+    "timestamp": "2025-09-11T05:54:36.631Z",
+    "accountCount": 9,
+    "proofSize": 974,
+    "computeUnits": 49159
+  },
+  {
+    "id": "b84a5ea3a9d14151bc67a69badbec758d9e795cf5a5488df1c7125a6f0100b29",
+    "type": "compression",
+    "timestamp": "2025-09-10T16:01:48.518Z",
+    "accountCount": 6,
+    "proofSize": 546,
+    "computeUnits": 34531
+  },
+  {
+    "id": "04e58d51930c8086e8dcd94307220ae82182eb398d8f3a3de2580bc3a2a701b4",
+    "type": "compression",
+    "timestamp": "2025-09-10T14:21:06.849Z",
+    "accountCount": 8,
+    "proofSize": 709,
+    "computeUnits": 79903
+  },
+  {
+    "id": "fcfceeeb260b84ced92bd160f2fd49077f165fd9d89868c869cb50a4bab30585",
+    "type": "compression",
+    "timestamp": "2025-09-10T18:15:37.259Z",
+    "accountCount": 2,
+    "proofSize": 602,
+    "computeUnits": 39705
+  },
+  {
+    "id": "1d04ea1437f0c57b7777e443872efe0f5c6cfa1bddf1fd3c64afd4bd1025d751",
+    "type": "compression",
+    "timestamp": "2025-09-10T16:02:10.489Z",
+    "accountCount": 10,
+    "proofSize": 1397,
+    "computeUnits": 92437
+  },
+  {
+    "id": "91be595feb3c9b64ec9ceecd947b5b382570dc65e6ddf600365779f1980bbaba",
+    "type": "compression",
+    "timestamp": "2025-09-11T00:08:30.833Z",
+    "accountCount": 8,
+    "proofSize": 1355,
+    "computeUnits": 53259
+  },
+  {
+    "id": "95e7e1f35579b597c7032f343b8e538ccdf44f97d55415101b5b4a929562c9ac",
+    "type": "compression",
+    "timestamp": "2025-09-10T17:04:48.651Z",
+    "accountCount": 8,
+    "proofSize": 1282,
+    "computeUnits": 98098
+  },
+  {
+    "id": "861e49e014c8c86a2bda0d9e79e459c69628a31d5a235938cf1d0303188debe2",
+    "type": "compression",
+    "timestamp": "2025-09-11T02:41:43.370Z",
+    "accountCount": 8,
+    "proofSize": 692,
+    "computeUnits": 88856
+  },
+  {
+    "id": "32bdd688f5e63f698143fa3de7cc366aa72bc45c5a7e7324e3f6fcf184a33b09",
+    "type": "compression",
+    "timestamp": "2025-09-10T23:18:43.175Z",
+    "accountCount": 8,
+    "proofSize": 745,
+    "computeUnits": 40443
+  },
+  {
+    "id": "764ebc7b20f3fe0e4c04d00e07cefeec585178d92b0acadf6d9065cb2e9a3fe1",
+    "type": "compression",
+    "timestamp": "2025-09-10T10:42:01.793Z",
+    "accountCount": 7,
+    "proofSize": 627,
+    "computeUnits": 92221
+  },
+  {
+    "id": "78ef0118cff126c8d741ecf1429611482cc8bc9b636ae7d449df2bf99e2dfa97",
+    "type": "compression",
+    "timestamp": "2025-09-10T17:43:23.753Z",
+    "accountCount": 5,
+    "proofSize": 911,
+    "computeUnits": 116730
+  },
+  {
+    "id": "f0e2888345cc1a2e5d56a003fd78aa52032ef99c2aef1848ce816f6ad4394ec9",
+    "type": "compression",
+    "timestamp": "2025-09-11T02:14:25.800Z",
+    "accountCount": 10,
+    "proofSize": 840,
+    "computeUnits": 40025
+  },
+  {
+    "id": "355901794497c5493c08fd0f2b05736bdab76a3505ca3ba6df558521e2ee4f64",
+    "type": "compression",
+    "timestamp": "2025-09-10T19:55:21.182Z",
+    "accountCount": 7,
+    "proofSize": 1009,
+    "computeUnits": 50829
+  },
+  {
+    "id": "c611828525d71220c23e83954ec4e31625e9783f23d6979529cc22511656af76",
+    "type": "compression",
+    "timestamp": "2025-09-11T07:33:18.520Z",
+    "accountCount": 5,
+    "proofSize": 1079,
+    "computeUnits": 40659
+  },
+  {
+    "id": "432696df7adbe8ff28b7e1bcaa7cfd0cb7360cdd88fd625b831ba2f86c7bd5d4",
+    "type": "compression",
+    "timestamp": "2025-09-10T12:56:55.578Z",
+    "accountCount": 4,
+    "proofSize": 1099,
+    "computeUnits": 56953
+  }
+]

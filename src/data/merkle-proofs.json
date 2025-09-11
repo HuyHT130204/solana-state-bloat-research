@@ -1,0 +1,19 @@
+{
+  "root": "560ff956d663b3bea260fae1ebdfac47f8bc909c9ca8c2638d559b1e3110b30c",
+  "proofs": [
+    [
+      "d0077803db44f9caaf467f70750e4ff4e44f14bdb578edcf63a3ee88e74d011c",
+      "a3e1644b4b4cb0baadfe98df89d1c0725dc8e4d01ea47b15d92400d830554cfb"
+    ],
+    [
+      "1351e4ba9ae3a570dacefc9bf05b6d4987066465dbb2e93efe7bc83e5f076a1c",
+      "a3e1644b4b4cb0baadfe98df89d1c0725dc8e4d01ea47b15d92400d830554cfb"
+    ],
+    [
+      "55a2e3d0162b5ea37547366feb6b8101502e2b2405c6767cf899f733d032c1c8",
+      "f15a70b69159f3bbed2f20fce38182892e89d52db226bcf3fa0482d39e65968a"
+    ]
+  ],
+  "count": 3,
+  "generated_at": "2025-09-11T08:15:24.035Z"
+}

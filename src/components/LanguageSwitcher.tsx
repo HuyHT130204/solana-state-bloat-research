@@ -49,15 +49,19 @@ export default function LanguageSwitcher() {
         resolve()
         return
       }
-      ;(window as any).googleTranslateElementInit = function () {
+      type GoogleObj = { translate?: { TranslateElement?: new (opts: { pageLanguage: string; autoDisplay: boolean; includedLanguages: string }, mountId: string) => void } }
+      const w = window as unknown as { googleTranslateElementInit?: () => void; google?: GoogleObj }
+      w.googleTranslateElementInit = function () {
         try {
-          // @ts-ignore
-          new (window as any).google.translate.TranslateElement({
-            pageLanguage: 'en',
-            autoDisplay: false,
-            includedLanguages: 'en,vi'
-          }, 'google_translate_element')
-        } catch {}
+          const TranslateCtor = w.google?.translate?.TranslateElement
+          if (TranslateCtor) {
+            new TranslateCtor({
+              pageLanguage: 'en',
+              autoDisplay: false,
+              includedLanguages: 'en,vi'
+            }, 'google_translate_element')
+          }
+        } catch { /* empty */ }
         setScriptLoaded(true)
         resolve()
       }

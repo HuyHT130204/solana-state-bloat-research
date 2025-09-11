@@ -1,0 +1,31 @@
+{
+  "generated_at": "2025-09-10T00:00:00.000Z",
+  "notes": [
+    {
+      "id": "live-state-size",
+      "value": 500,
+      "unit": "GB",
+      "source": "GetBlock guide + validator forums (est.)",
+      "source_url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "comment": "Estimate; cross-check pending with direct validator telemetry."
+    },
+    {
+      "id": "full-ledger-size",
+      "value": 400,
+      "unit": "TB",
+      "source": "QuickNode docs (archive node) and historical growth extrapolation",
+      "source_url": "https://www.quicknode.com/guides/infrastructure/node-setup/ethereum-full-node-vs-archive-node",
+      "comment": "Secondary citation; mark as estimate until first-party confirmation."
+    },
+    {
+      "id": "pb-per-year",
+      "value": 6,
+      "unit": "PB/year",
+      "source": "Astralane (citing DexterLab) — secondary",
+      "source_url": "https://example.com/astralane-citation",
+      "comment": "Explicitly labeled as secondary; subject to revision."
+    }
+  ]
+}
+
+

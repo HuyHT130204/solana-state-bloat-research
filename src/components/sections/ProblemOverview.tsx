@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
-import { AlertTriangle, HardDrive, DollarSign, Users, TrendingUp, Database } from 'lucide-react'
+import { AlertTriangle, HardDrive, DollarSign, Users, TrendingUp, Database, Link as LinkIcon, ExternalLink } from 'lucide-react'
+import notes from '../../data/research-notes.json'
+import { ComponentType } from 'react'
 
 const problems = [
   {
@@ -7,35 +9,51 @@ const problems = [
     title: 'Massive Storage Requirements',
     description: 'Solana\'s account model requires all account data to be stored fully on-chain and replicated across all validators indefinitely.',
     stats: '500 GB live state, 400+ TB full ledger',
-    impact: 'High'
+    impact: 'High',
+    sources: [
+      { label: 'GetBlock', url: 'https://getblock.io/blog/solana-full-node-complete-guide/' }
+    ]
   },
   {
     icon: DollarSign,
     title: 'Exorbitant Operational Costs',
     description: 'Validators require high-end hardware (384+ GB RAM, enterprise NVMe storage) driving operational costs of $500-$1,000/month.',
     stats: '$500-1,000/month per validator',
-    impact: 'High'
+    impact: 'High',
+    sources: [
+      { label: 'ServerMania', url: 'https://www.servermania.com/kb/articles/how-to-host-solana-validator-node' },
+      { label: 'GetBlock', url: 'https://getblock.io/blog/solana-full-node-complete-guide/' }
+    ]
   },
   {
     icon: Users,
     title: 'Developer Rent Burden',
     description: 'Developers face rent costs proportional to data size, with small accounts requiring 0.001-0.01 SOL for rent exemption.',
     stats: '0.001-0.01 SOL per small account',
-    impact: 'Medium'
+    impact: 'Medium',
+    sources: [
+      { label: 'QuickNode (rent)', url: 'https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana' }
+    ]
   },
   {
     icon: TrendingUp,
     title: 'Exponential Growth',
     description: 'Ledger growth is substantial; industry guides report tens → hundreds of TB per year depending on role (archive/full history).',
     stats: 'Ledger growth: tens → hundreds TB/year',
-    impact: 'Critical'
+    impact: 'Critical',
+    sources: [
+      { label: 'GetBlock', url: 'https://getblock.io/blog/solana-full-node-complete-guide/' }
+    ]
   },
   {
     icon: Database,
     title: 'Centralization Risk',
     description: 'High hardware requirements create barriers to entry for validators, potentially leading to centralization.',
     stats: '384+ GB RAM requirement',
-    impact: 'High'
+    impact: 'High',
+    sources: [
+      { label: 'ServerMania', url: 'https://www.servermania.com/kb/articles/how-to-host-solana-validator-node' }
+    ]
   },
   {
     icon: AlertTriangle,
@@ -53,7 +71,29 @@ const impactColors = {
   Critical: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
 }
 
+type TopClaim = { id: string; value?: number; unit?: string; source_url?: string; fetched_at?: string }
+
+type ProblemSource = { label: string; url: string }
+
+type ProblemItem = {
+  icon: ComponentType<{ className?: string }>
+  title: string
+  description: string
+  stats: string
+  impact: keyof typeof impactColors
+  sources?: ProblemSource[]
+}
+
+const topClaims = (notes as unknown as { topClaims?: TopClaim[] }).topClaims ?? []
+function claimById(id: string): TopClaim | undefined {
+  return topClaims.find((c) => c.id === id)
+}
+
 export default function ProblemOverview() {
+  const liveState = claimById('live-state-size')
+  const fullLedger = claimById('full-ledger-size')
+  // RAM claim not shown in this section; displayed in QuantitativeDashboard
+
   return (
     <section id="overview" className="section-padding bg-gray-50 dark:bg-gray-800">
       <div className="container-max">
@@ -82,25 +122,27 @@ export default function ProblemOverview() {
           className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
         >
           <div className="card text-center">
-            <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">≈500 GB</div>
+            <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">{liveState ? `≈${liveState.value} ${liveState.unit}` : '≈500 GB'}</div>
             <div className="text-gray-600 dark:text-gray-400">Live Account State (Accounts DB)</div>
-            <div className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-              Source: <a href="https://getblock.io/blog/solana-full-node-complete-guide/" 
+            <div className="text-sm text-gray-500 dark:text-gray-500 mt-1 flex items-center justify-center space-x-2">
+              <a href={liveState?.source_url} 
                         target="_blank" rel="noopener noreferrer" 
-                        className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                GetBlock Guide
+                        className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center">
+                <LinkIcon className="w-3.5 h-3.5 mr-1" />
+                Source
               </a>
+              {liveState?.fetched_at && <span className="text-xs">Fetched: {liveState.fetched_at}</span>}
             </div>
           </div>
           
           <div className="card text-center">
-            <div className="text-4xl font-bold text-accent-600 dark:text-accent-400 mb-2">400+ TB</div>
+            <div className="text-4xl font-bold text-accent-600 dark:text-accent-400 mb-2">{fullLedger ? `${fullLedger.value}+ ${fullLedger.unit}` : '400+ TB'}</div>
             <div className="text-gray-600 dark:text-gray-400">Full Unpruned Ledger (Archive)</div>
-            <div className="text-sm text-gray-500 dark:text-gray-500 mt-1 space-x-1">
-              <span>Sources:</span>
-              <a href="https://rpcfast.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">RPC Fast</a>
-              <span>·</span>
-              <a href="https://getblock.io/blog/solana-full-node-complete-guide/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">GetBlock</a>
+            <div className="text-sm text-gray-500 dark:text-gray-500 mt-1 flex items-center justify-center space-x-2">
+              <a href={fullLedger?.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center">
+                <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
+              </a>
+              {fullLedger?.fetched_at && <span className="text-xs">Fetched: {fullLedger.fetched_at}</span>}
             </div>
           </div>
           
@@ -111,7 +153,7 @@ export default function ProblemOverview() {
               <span>Examples:</span>
               <a href="https://www.servermania.com/kb/articles/how-to-host-solana-validator-node" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">ServerMania</a>
               <span>·</span>
-              <a href="https://rpcfast.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">RPC Fast</a>
+              <a href="https://getblock.io/blog/solana-full-node-complete-guide/" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">GetBlock</a>
             </div>
           </div>
         </motion.div>
@@ -124,7 +166,7 @@ export default function ProblemOverview() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {problems.map((problem, index) => {
+          {(problems as ProblemItem[]).map((problem, index) => {
             const Icon = problem.icon
             return (
               <motion.div
@@ -146,7 +188,7 @@ export default function ProblemOverview() {
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                         {problem.title}
                       </h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${impactColors[problem.impact as keyof typeof impactColors]}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${impactColors[problem.impact]}`}>
                         {problem.impact}
                       </span>
                     </div>
@@ -156,6 +198,16 @@ export default function ProblemOverview() {
                     <div className="text-sm font-medium text-primary-600 dark:text-primary-400">
                       {problem.stats}
                     </div>
+                    {Array.isArray(problem.sources) && problem.sources.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {problem.sources.map((s: ProblemSource, sIdx: number) => (
+                          <a key={sIdx} href={s.url} target="_blank" rel="noopener noreferrer" className="text-xs px-2 py-1 rounded-full bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200 inline-flex items-center hover:opacity-90 transition-opacity">
+                            <ExternalLink className="w-3.5 h-3.5 mr-1" />
+                            {s.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>

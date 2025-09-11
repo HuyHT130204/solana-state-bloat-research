@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts'
-import { TrendingUp, HardDrive, DollarSign, Users } from 'lucide-react'
+import { TrendingUp, HardDrive, DollarSign, Users, Link as LinkIcon } from 'lucide-react'
+import notes from '../../data/research-notes.json'
+import bench from '../../data/benchmarks.json'
 
 const stateGrowthData = [
   { date: '2023-01', solana: 200, ethereum: 0.8 },
@@ -37,7 +39,23 @@ const rentCostsData = [
 
 // const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444']
 
+type Claim = { id: string; value?: number; unit?: string; source_url?: string; fetched_at?: string; min?: number; max?: number }
+const topClaims = (notes as unknown as { topClaims?: Claim[] }).topClaims ?? []
+const solPrice = (notes as unknown as { solPriceUSD?: { value?: number } }).solPriceUSD
+
+function claim(id: string): Claim | undefined {
+  return topClaims.find((c) => c.id === id)
+}
+
+type ProofRow = { accountSizeBytes: number; sampleCount: number; depth: number; proofBytes: number }
+type BenchmarksDoc = { benchmarks?: { proofSizes?: ProofRow[]; generated_at?: string } }
+const benchmarksDoc = (bench as unknown as BenchmarksDoc).benchmarks
+const proofSizes = benchmarksDoc?.proofSizes ?? []
+
 export default function QuantitativeDashboard() {
+  const liveState = claim('live-state-size')
+  const fullLedger = claim('full-ledger-size')
+  const validatorRam = claim('validator-ram')
   return (
     <section id="dashboard" className="section-padding bg-white dark:bg-gray-900">
       <div className="container-max">
@@ -66,27 +84,25 @@ export default function QuantitativeDashboard() {
         >
           <div className="card text-center">
             <TrendingUp className="w-8 h-8 text-primary-600 dark:text-primary-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">500 GB</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">{liveState ? `${liveState.value} ${liveState.unit}` : '—'}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Live State Size</div>
-            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-              <a href="#about-researcher" 
-                 target="_blank" rel="noopener noreferrer" 
-                 className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                Source: Independent Research
+            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1 flex items-center justify-center space-x-2">
+              <a href={liveState?.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center">
+                <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
               </a>
+              {liveState?.fetched_at && <span>Fetched: {liveState.fetched_at}</span>}
             </div>
           </div>
           
           <div className="card text-center">
             <HardDrive className="w-8 h-8 text-accent-600 dark:text-accent-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">400+ TB</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">{fullLedger ? `${fullLedger.value}+ ${fullLedger.unit}` : '—'}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Full Ledger</div>
-            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-              <a href="#about-researcher" 
-                 target="_blank" rel="noopener noreferrer" 
-                 className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                Source: Independent Research
+            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1 flex items-center justify-center space-x-2">
+              <a href={fullLedger?.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center">
+                <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
               </a>
+              {fullLedger?.fetched_at && <span>Fetched: {fullLedger.fetched_at}</span>}
             </div>
           </div>
           
@@ -105,14 +121,13 @@ export default function QuantitativeDashboard() {
           
           <div className="card text-center">
             <Users className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">384+ GB</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">{validatorRam ? `${validatorRam.min}–${validatorRam.max} ${validatorRam.unit}` : '—'}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">RAM Required</div>
-            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-              <a href="#about-researcher" 
-                 target="_blank" rel="noopener noreferrer" 
-                 className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
-                Source: Independent Research
+            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1 flex items-center justify-center space-x-2">
+              <a href={validatorRam?.source_url} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center">
+                <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
               </a>
+              {validatorRam?.fetched_at && <span>Fetched: {validatorRam.fetched_at}</span>}
             </div>
           </div>
         </motion.div>
@@ -293,6 +308,31 @@ export default function QuantitativeDashboard() {
           </div>
         </motion.div>
 
+        {/* Merkle Proof Size Benchmarks */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.55 }}
+          viewport={{ once: true }}
+          className="card mb-16"
+        >
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+            Merkle Proof Sizes (sampleCount=1024)
+          </h3>
+          <ResponsiveContainer width="100%" height={320}>
+            <BarChart data={proofSizes} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="accountSizeBytes" stroke="#6B7280" fontSize={12} />
+              <YAxis stroke="#6B7280" fontSize={12} />
+              <Tooltip contentStyle={{ background: 'rgba(17,24,39,0.9)', border: '1px solid #374151', borderRadius: '8px', color: '#F9FAFB' }} labelStyle={{ color: '#9CA3AF' }} />
+              <Bar dataKey="proofBytes" fill="#3B82F6" radius={[6,6,0,0]} name="Proof Size (bytes)" />
+            </BarChart>
+          </ResponsiveContainer>
+          <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+            Generated: {benchmarksDoc?.generated_at ?? '—'}
+          </div>
+        </motion.div>
+
         {/* Rent Costs Table */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -325,7 +365,7 @@ export default function QuantitativeDashboard() {
             </table>
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-500 mt-4">
-            *Assuming SOL = $100 USD (auto-updatable by script). Reference: <a href="https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">QuickNode</a>
+            *Assuming SOL = ${solPrice?.value ? solPrice.value.toFixed(2) : '100'} USD (auto-updatable). Ref: <a href="https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">QuickNode</a>
           </div>
         </motion.div>
       </div>

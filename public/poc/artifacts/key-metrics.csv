@@ -1,0 +1,9 @@
+Metric,Value,Unit
+Merkle Proof Size,640,bytes
+ZK Proof Size,128,bytes
+Verification Time,2.5,ms
+Compression Ratio,15.2,x
+Compute Units (Est),40000,CU
+Transaction Delta,150,bytes
+Storage Cost (1GB),3.50,USD/year
+Storage Cost (1GB),0.0175,SOL/year

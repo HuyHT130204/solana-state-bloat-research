@@ -1,0 +1,25 @@
+{
+  "benchmarks": {
+    "proofSizes": [
+      {
+        "accountSizeBytes": 256,
+        "sampleCount": 1024,
+        "depth": 10,
+        "proofBytes": 320
+      },
+      {
+        "accountSizeBytes": 1024,
+        "sampleCount": 1024,
+        "depth": 10,
+        "proofBytes": 320
+      },
+      {
+        "accountSizeBytes": 10240,
+        "sampleCount": 1024,
+        "depth": 10,
+        "proofBytes": 320
+      }
+    ],
+    "generated_at": "2025-09-11T08:15:24.392Z"
+  }
+}

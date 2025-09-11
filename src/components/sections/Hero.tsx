@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { Calendar, Trophy, Users } from 'lucide-react'
+import { Calendar, Trophy, Users, Link as LinkIcon } from 'lucide-react'
+import notes from '../../data/research-notes.json'
 import { lazy, Suspense, useRef } from 'react'
 const StateGrowth3D = lazy(() => import('../visualizations/StateGrowth3D'))
 import { useData } from '../../contexts/DataContext'
@@ -37,6 +38,12 @@ export default function Hero() {
   }, [])
 
   // Data is now preloaded globally via DataContext
+  type TopClaim =
+    | { id: string; label: string; value: number; unit: string; source_url: string; fetched_at?: string; note?: string }
+    | { id: string; label: string; min: number; max: number; unit: string; source_url: string; fetched_at?: string; note?: string }
+  const claims = (notes as { topClaims: TopClaim[] }).topClaims
+  const liveState = claims.find((c) => c.id === 'live-state-size')
+  const fullLedger = claims.find((c) => c.id === 'full-ledger-size')
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary-50 via-white to-accent-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Background Pattern */}
@@ -94,12 +101,24 @@ export default function Hero() {
               className="grid grid-cols-2 gap-6"
             >
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">500 GB</div>
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{liveState ? (('value' in liveState) ? `${liveState.value} ${liveState.unit}` : `${liveState.min}–${liveState.max} ${liveState.unit}`) : '500 GB'}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Live State Size</div>
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 flex items-center space-x-2">
+                  <a href={liveState?.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center hover:text-primary-600 dark:hover:text-primary-400">
+                    <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
+                  </a>
+                  {liveState?.fetched_at && <span>Fetched: {liveState.fetched_at}</span>}
+                </div>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                <div className="text-2xl font-bold text-accent-600 dark:text-accent-400">400+ TB</div>
+                <div className="text-2xl font-bold text-accent-600 dark:text-accent-400">{fullLedger ? (('value' in fullLedger) ? `${fullLedger.value}+ ${fullLedger.unit}` : `${fullLedger.min}–${fullLedger.max} ${fullLedger.unit}`) : '400+ TB'}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Full Ledger Size</div>
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 flex items-center space-x-2">
+                  <a href={fullLedger?.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center hover:text-primary-600 dark:hover:text-primary-400">
+                    <LinkIcon className="w-3.5 h-3.5 mr-1" /> Source
+                  </a>
+                  {fullLedger?.fetched_at && <span>Fetched: {fullLedger.fetched_at}</span>}
+                </div>
               </div>
             </motion.div>
 
@@ -127,8 +146,11 @@ export default function Hero() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Trophy className="w-4 h-4" />
-                  <span>Technical Analysis</span>
+                  <span>Technical Analysis (incl. Verkle + state expiry update)</span>
                 </div>
+              </div>
+              <div className="mt-4 text-xs opacity-90">
+                Latest: Ethereum research explores Verkle Tries with state expiry; this work tracks such trends and contrasts them with Solana proposals.
               </div>
             </motion.div>
 

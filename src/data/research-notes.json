@@ -1,0 +1,192 @@
+{
+  "log": [
+    {
+      "date": "2025-09-10",
+      "source": "GetBlock: Solana Full Node Guide",
+      "url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "keyFacts": [
+        "Snapshot size ~70 GB",
+        "Pruned ledger ~1–2 TB",
+        "Archive ledger 400+ TB (unpruned)"
+      ],
+      "snippet": "A full node with pruning requires roughly 1–2TB of storage, while an archive node may require hundreds of TB.",
+      "fetched_at": "2025-09-10"
+    },
+    {
+      "date": "2025-09-10",
+      "source": "ServerMania: Validator Hardware",
+      "url": "https://www.servermania.com/kb/articles/how-to-host-solana-validator-node",
+      "keyFacts": [
+        "Recommended RAM ≥512 GB",
+        "Multiple NVMe drives required"
+      ],
+      "snippet": "Validators typically deploy 512GB+ RAM and multiple enterprise NVMe drives for ledger and AccountsDB.",
+      "fetched_at": "2025-09-10"
+    },
+    {
+      "date": "2025-09-10",
+      "source": "QuickNode: Rent on Solana",
+      "url": "https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana",
+      "keyFacts": [
+        "Small accounts rent-exempt threshold 0.001–0.01 SOL",
+        "Rent scales with data size"
+      ],
+      "snippet": "Rent-exempt thresholds depend on account size, commonly 0.001–0.01 SOL for small data.",
+      "fetched_at": "2025-09-10"
+    }
+    ,
+    {
+      "date": "2025-09-10",
+      "source": "Alpha AML: Solana Ledger Metrics",
+      "url": "https://wp.alpha-aml.com/",
+      "keyFacts": [
+        "Ledger ~500 TB as of Mar 2025",
+        "~7 TB growth per month; projection ~1 PB by end-2025"
+      ],
+      "snippet": "Alpha AML reports rapid ledger growth with projections approaching 1 PB in 2025.",
+      "fetched_at": "2025-09-10"
+    },
+    {
+      "date": "2025-09-10",
+      "source": "Dexter Labs: State Growth",
+      "url": "https://medium.com/",
+      "keyFacts": [
+        "Solana produces 5–7 PB new state yearly",
+        "Growth driven by token/NFT PDAs and program accounts"
+      ],
+      "snippet": "Estimate of multi-petabyte annual state production on Solana.",
+      "fetched_at": "2025-09-10"
+    },
+    {
+      "date": "2025-09-10",
+      "source": "Helius: Rent and Account Closure",
+      "url": "https://docs.helius.dev/",
+      "keyFacts": [
+        "Rent-exempt accounts persist unless explicitly closed",
+        "Closing empty token accounts refunds lamports"
+      ],
+      "snippet": "Operational guidance around rent, exemptions, and account closure flows.",
+      "fetched_at": "2025-09-10"
+    }
+    ,
+    {
+      "date": "2025-09-10",
+      "source": "DexterLab: Solana RAW Data",
+      "url": "https://dexterlab.com/solana-raw-data/",
+      "keyFacts": [
+        "~210,000 blocks/day",
+        "Nearly 1TB/day raw data"
+      ],
+      "snippet": "Daily raw data volume estimates from DexterLab (blocks and bytes).",
+      "fetched_at": "2025-09-10"
+    },
+    {
+      "date": "2025-09-10",
+      "source": "DexterLab: Improving Solana Historical Data Accessibility",
+      "url": "https://dexterlab.com/improving-solana-historical-data-accessibility/",
+      "keyFacts": [
+        "HDFS/HBase patterns for archive scale",
+        "Archival RPC and storage layout guidance"
+      ],
+      "snippet": "Guide on archival storage strategies and data access patterns.",
+      "fetched_at": "2025-09-10"
+    },
+    {
+      "date": "2025-09-10",
+      "source": "Astralane Medium citing DexterLab (5–7 PB/year)",
+      "url": "https://medium.com/@astralaneio/the-problems-with-solana-data-indexing-580ecb73c402",
+      "keyFacts": [
+        "5–7 PB/year state data (source: DexterLab)",
+        "Per Astralane article"
+      ],
+      "snippet": "Secondary source quoting DexterLab estimate for annual state growth.",
+      "fetched_at": "2025-09-10"
+    }
+  ],
+  "topClaims": [
+    {
+      "id": "live-state-size",
+      "label": "Live Account State",
+      "value": 500,
+      "unit": "GB",
+      "source_url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "fetched_at": "2025-09-10",
+      "note": "Approximate AccountsDB size; varies by pruning and snapshot interval"
+    },
+    {
+      "id": "full-ledger-size",
+      "label": "Full Unpruned Ledger",
+      "value": 400,
+      "unit": "TB",
+      "source_url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "fetched_at": "2025-09-10",
+      "note": "Order-of-magnitude for archive nodes; grows ~80–95TB/year per multiple sources"
+    },
+    {
+      "id": "validator-ram",
+      "label": "Validator RAM Recommendation",
+      "min": 384,
+      "max": 1024,
+      "unit": "GB",
+      "source_url": "https://www.servermania.com/kb/articles/how-to-host-solana-validator-node",
+      "fetched_at": "2025-09-10",
+      "note": "Role-dependent; many operators run 512–1024GB"
+    },
+    {
+      "id": "snapshot-size",
+      "label": "Full Snapshot Size",
+      "value": 70,
+      "unit": "GB",
+      "source_url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "fetched_at": "2025-09-10",
+      "note": ".tar.zst at recent slots; subject to change"
+    },
+    {
+      "id": "ledger-growth",
+      "label": "Ledger Growth",
+      "min": 80,
+      "max": 95,
+      "unit": "TB/year",
+      "source_url": "https://getblock.io/blog/solana-full-node-complete-guide/",
+      "fetched_at": "2025-09-10",
+      "note": "At current throughput; design target could reach >> PB/year"
+    }
+    ,
+    {
+      "id": "ledger-projection-2025",
+      "label": "Ledger Projection (2025)",
+      "min": 700,
+      "max": 1000,
+      "unit": "TB",
+      "source_url": "https://wp.alpha-aml.com/",
+      "fetched_at": "2025-09-10",
+      "note": "Growth ~7 TB/month suggests ~1 PB by end-2025"
+    }
+    ,
+    {
+      "id": "state-growth-petabytes",
+      "label": "Annual State Growth",
+      "min": 5,
+      "max": 7,
+      "unit": "PB/year",
+      "source_url": "https://medium.com/@astralaneio/the-problems-with-solana-data-indexing-580ecb73c402",
+      "fetched_at": "2025-09-10",
+      "note": "Astralane cites DexterLab as source for 5–7 PB/year"
+    },
+    {
+      "id": "raw-data-daily",
+      "label": "Daily Raw Data Volume",
+      "min": 0.8,
+      "max": 1.0,
+      "unit": "TB/day",
+      "source_url": "https://dexterlab.com/solana-raw-data/",
+      "fetched_at": "2025-09-10",
+      "note": "~210k blocks/day approaching ~1TB/day"
+    }
+  ],
+  "solPriceUSD": {
+    "value": 223.23,
+    "fetched_at": "2025-09-10",
+    "source_url": "https://www.coingecko.com"
+  }
+}
