@@ -4,6 +4,16 @@
 
 This document provides the complete specification for the Solana state compression syscalls, including full signatures, semantics, error codes, and compute unit estimates.
 
+## SLA & k-of-n (Draft Summary)
+
+- Redundancy: k-of-n providers (default 2-of-3) with geographic and operator diversity.
+- Attestations: providers sign availability proofs every T minutes; missed attestations accrue penalties.
+- Retrieval SLO: median < 5s for 1 MB; P95 < 10s; measured by community monitors.
+- Penalties: linear penalties for SLO misses; slashing from escrow on proven withholding/equivocation.
+- Escrow: providers lock E tokens per epoch; funds for re-replication and user compensation upon breach.
+- Price Oracle: USD/byte-year via decentralized oracle; deposit auto-adjusts each epoch.
+- Dispute: any party can submit evidence (failed retrieval logs + signatures) adjudicated by on-chain rules.
+
 ## Syscall Functions
 
 ### sol_compress_account

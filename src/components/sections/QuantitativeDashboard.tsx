@@ -88,7 +88,15 @@ export default function QuantitativeDashboard() {
       out.push({ name: 'Solana', stateSize: 500, unit: 'GB', color: '#14F195' })
       out.push({ name: 'Ethereum', stateSize: 1.2, unit: 'TB', color: '#627EEA' })
     }
-    return out
+    // Normalize all values to GB for fair comparison
+    const toGb = (value: number, unit: string) => {
+      const u = (unit || 'GB').toUpperCase()
+      if (u === 'TB') return value * 1024
+      if (u === 'GB') return value
+      if (u === 'MB') return value / 1024
+      return value
+    }
+    return out.map((row) => ({ ...row, stateSize: toGb(row.stateSize, row.unit), unit: 'GB' }))
   }, [snapshot])
 
   const validatorCostsData: CostSlice[] = useMemo(() => {
@@ -255,6 +263,7 @@ export default function QuantitativeDashboard() {
                 />
               </LineChart>
             </ResponsiveContainer>
+            <div className="text-xs text-yellow-600 dark:text-yellow-400 mt-2">Illustrative trend; methodology depends on snapshot series. Units as shown per series.</div>
             <div className="text-xs text-gray-500 dark:text-gray-500 mt-2 space-x-1">
               <span>Sources:</span>
               <a href={snapshot?.metrics?.solana?.liveStateSize?.source || 'https://getblock.io/blog/solana-full-node-complete-guide/'} target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400">Solana</a>
@@ -271,9 +280,10 @@ export default function QuantitativeDashboard() {
             viewport={{ once: true }}
             className="card"
           >
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Validator Cost Breakdown (Monthly)
             </h3>
+            <div className="text-xs text-yellow-600 dark:text-yellow-400 mb-4">Illustrative split; actual costs vary by operator and region</div>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -320,9 +330,10 @@ export default function QuantitativeDashboard() {
             viewport={{ once: true }}
             className="card"
           >
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
               Blockchain State Size Comparison
             </h3>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">Units normalized to GB</div>
             <ResponsiveContainer width="100%" height={360}>
               <BarChart data={blockchainComparisonData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -334,7 +345,7 @@ export default function QuantitativeDashboard() {
                 <YAxis 
                   stroke="#6B7280"
                   fontSize={12}
-                  label={{ value: 'State Size', angle: -90, position: 'insideLeft' }}
+                  label={{ value: 'State Size (GB)', angle: -90, position: 'insideLeft' }}
                 />
                 <Tooltip 
                   contentStyle={{
@@ -343,8 +354,8 @@ export default function QuantitativeDashboard() {
                     borderRadius: '8px',
                     color: 'var(--tw-text-opacity)'
                   }}
-                  formatter={(value, _name, props) => [
-                    `${value} ${props.payload.unit}`,
+                  formatter={(value) => [
+                    `${value} GB`,
                     'State Size'
                   ]}
                 />
@@ -403,9 +414,10 @@ export default function QuantitativeDashboard() {
           viewport={{ once: true }}
           className="card"
         >
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
             Solana Rent Costs by Account Size
           </h3>
+          <div className="text-xs text-yellow-600 dark:text-yellow-400 mb-4">Illustrative tiers; please refer to protocol rent formula for exact values</div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -426,8 +438,11 @@ export default function QuantitativeDashboard() {
               </tbody>
             </table>
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-500 mt-4">
-            *Assuming SOL = ${solPrice?.value ? solPrice.value.toFixed(2) : '100'} USD (auto-updatable). Ref: <a href="https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">QuickNode</a>
+          <div className="text-xs text-gray-500 dark:text-gray-500 mt-4 space-x-2">
+            <span>*Assuming SOL = ${solPrice?.value ? solPrice.value.toFixed(2) : '100'} USD (auto-updatable).</span>
+            <span>Ref: <a href="https://www.quicknode.com/guides/solana-development/getting-started/understanding-rent-on-solana" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">QuickNode</a></span>
+            <span>·</span>
+            <a href="#rent-calculator" className="hover:text-primary-600 dark:hover:text-primary-400 underline">Open protocol Rent Calculator</a>
           </div>
         </motion.div>
       </div>

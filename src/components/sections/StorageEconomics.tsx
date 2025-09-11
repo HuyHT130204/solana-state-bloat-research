@@ -9,6 +9,7 @@ type ResearchNotes = {
     filecoin?: { pricePerGbYear?: number; source_url?: string; fetched_at?: string }
     ipfs?: { pricePerGbYear?: number; source_url?: string; fetched_at?: string }
   }
+  rentParams?: { lamportsPerByteYear?: number; exemptionYears?: number }
 }
 
 const BYTES_PER_UNIT: Record<'KB' | 'MB' | 'GB' | 'TB', number> = {
@@ -201,6 +202,26 @@ export default function StorageEconomics() {
             </div>
           </div>
 
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+              <div className="font-medium mb-3" id="rent-calculator">Protocol Rent Calculator (Parameterized)</div>
+              <RentCalculator 
+                defaultSolPrice={{ value: solPrice }} 
+                defaultLamportsPerByteYear={baseNotes.rentParams?.lamportsPerByteYear}
+                defaultExemptionYears={baseNotes.rentParams?.exemptionYears}
+              />
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">Formula reference: minimum_balance(bytes) ≈ bytes × lamports_per_byte_year × exemption_years. Configure parameters below to match current protocol values.</div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+              <div className="font-medium mb-3">Notes</div>
+              <ul className="list-disc pl-5 text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                <li>Exemption years thường đặt 2 năm; có thể thay đổi theo phiên bản.</li>
+                <li>Lamports per byte-year cần lấy từ Sysvar Rent/phiên bản runtime hiện hành.</li>
+                <li>Kết quả quy đổi USD dùng giá SOL ở trên (auto/refreshed).</li>
+              </ul>
+            </div>
+          </div>
+
           <div className="mt-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Detailed Cost Analysis</h3>
             
@@ -261,6 +282,62 @@ function EstimatorCU() {
         </label>
       </div>
       <div>Estimated CU: <span className="font-semibold">{estimate.toLocaleString()}</span></div>
+    </div>
+  )
+}
+
+
+type RentCalculatorProps = { defaultSolPrice?: { value?: number }; defaultLamportsPerByteYear?: number; defaultExemptionYears?: number }
+function RentCalculator({ defaultSolPrice, defaultLamportsPerByteYear, defaultExemptionYears }: RentCalculatorProps) {
+  const LAMPORTS_PER_SOL = 1_000_000_000
+  const [sizeValue, setSizeValue] = useState<number>(1)
+  const [sizeUnit, setSizeUnit] = useState<'B' | 'KB' | 'MB' | 'GB'>('KB')
+  const [lamportsPerByteYear, setLamportsPerByteYear] = useState<number>(defaultLamportsPerByteYear ?? 3480) // example; configure to protocol value
+  const [exemptionYears, setExemptionYears] = useState<number>(defaultExemptionYears ?? 2)
+  const [solPriceUsd, setSolPriceUsd] = useState<number>(defaultSolPrice?.value ?? 200)
+
+  const bytes = useMemo(() => {
+    const unit = sizeUnit
+    if (unit === 'B') return sizeValue
+    if (unit === 'KB') return sizeValue * 1024
+    if (unit === 'MB') return sizeValue * 1024 * 1024
+    if (unit === 'GB') return sizeValue * 1024 * 1024 * 1024
+    return sizeValue
+  }, [sizeValue, sizeUnit])
+
+  const lamports = useMemo(() => {
+    return Math.max(0, Math.floor(bytes * lamportsPerByteYear * exemptionYears))
+  }, [bytes, lamportsPerByteYear, exemptionYears])
+
+  const sol = useMemo(() => lamports / LAMPORTS_PER_SOL, [lamports])
+  const usd = useMemo(() => sol * (solPriceUsd || 1), [sol, solPriceUsd])
+
+  return (
+    <div className="text-sm space-y-3">
+      <div className="grid grid-cols-2 gap-3">
+        <label className="flex items-center gap-2">Size
+          <input type="number" className="input" min={0} step={0.001} value={sizeValue} onChange={(e) => setSizeValue(parseFloat(e.target.value || '0'))} />
+        </label>
+        <label className="flex items-center gap-2">Unit
+          <select className="input" value={sizeUnit} onChange={(e) => setSizeUnit(e.target.value as 'B' | 'KB' | 'MB' | 'GB')}>
+            <option>B</option><option>KB</option><option>MB</option><option>GB</option>
+          </select>
+        </label>
+        <label className="flex items-center gap-2 col-span-2">Lamports/byte-year
+          <input type="number" className="input" min={0} step={1} value={lamportsPerByteYear} onChange={(e) => setLamportsPerByteYear(parseInt(e.target.value || '0'))} />
+        </label>
+        <label className="flex items-center gap-2">Exemption years
+          <input type="number" className="input" min={1} step={1} value={exemptionYears} onChange={(e) => setExemptionYears(parseInt(e.target.value || '1'))} />
+        </label>
+        <label className="flex items-center gap-2">SOL price (USD)
+          <input type="number" className="input" min={0} step={0.01} value={solPriceUsd} onChange={(e) => setSolPriceUsd(parseFloat(e.target.value || '0'))} />
+        </label>
+      </div>
+      <div className="space-y-1">
+        <div>Bytes: <span className="font-medium">{bytes.toLocaleString()}</span></div>
+        <div>Minimum balance: <span className="font-medium">{lamports.toLocaleString()} lamports</span></div>
+        <div>≈ <span className="font-medium">{sol.toFixed(6)} SOL</span> (~${usd.toFixed(2)})</div>
+      </div>
     </div>
   )
 }

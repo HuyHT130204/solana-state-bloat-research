@@ -4,6 +4,19 @@
 
 This document provides a comprehensive security analysis of the Solana state compression and off-chain data availability system.
 
+## Expanded Threat Model and Assumptions
+
+- Adversaries: storage providers (faulty/malicious), network adversaries, compromised clients, dishonest oracles/relayers.
+- Objectives: data withholding, stale data serving, equivocation, commitment corruption, DoS retrieval.
+- Assumptions: on-chain commitments (Merkle roots) are final; clients can perform randomized sampling; majority of providers in k-of-n are honest within an epoch.
+
+## Controls & Guarantees
+
+1. Integrity: SHA-256 Merkle proofs from content-addressed blobs; root anchored on-chain.
+2. Availability: k-of-n redundancy, periodic liveness attestations, randomized retrieval sampling.
+3. Non-equivocation: signed attestations posted to public log; slashing on proven equivocation.
+4. Recovery: automatic re-replication on provider failure funded by escrow.
+
 ## Threat Vectors
 
 ### 1. Data Availability Failure
