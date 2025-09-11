@@ -156,9 +156,6 @@ export default function MigrationTimeline() {
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             Migration Timeline
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Lộ trình triển khai được trình bày theo hình chữ S, các phase hiển thị xen kẽ hai bên để tiết kiệm không gian và tăng tính trực quan.
-          </p>
         </motion.div>
 
         {/* Vertical center line timeline */}

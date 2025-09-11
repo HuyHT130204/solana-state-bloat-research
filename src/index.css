@@ -63,6 +63,22 @@ body { position: static !important; }
   .glass-effect {
     @apply bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20;
   }
+
+  /* Unified input/select styling for dark & light themes */
+  .input {
+    @apply w-full px-3 py-2 rounded-lg text-sm
+      bg-white dark:bg-gray-800
+      text-gray-900 dark:text-gray-100
+      placeholder-gray-400 dark:placeholder-gray-500
+      border border-gray-300 dark:border-gray-600
+      focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+      transition-colors duration-150;
+  }
+
+  /* Make selects visually consistent */
+  select.input {
+    @apply pr-8; /* room for native chevron */
+  }
 }
 
 @layer utilities {
