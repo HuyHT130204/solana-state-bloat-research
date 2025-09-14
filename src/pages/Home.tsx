@@ -13,6 +13,15 @@ import SyscallSpec from '../components/sections/SyscallSpec'
 import StorageEconomics from '../components/sections/StorageEconomics'
 import PilotPartners from '../components/sections/PilotPartners'
 import SecurityAppendix from '../components/sections/SecurityAppendix'
+import EconomicModeling from '../components/sections/EconomicModeling'
+import WorkingPrototype from '../components/sections/WorkingPrototype'
+import FormalSecurityProofs from '../components/sections/FormalSecurityProofs'
+import ProductionReadiness from '../components/sections/ProductionReadiness'
+import EcosystemImpact from '../components/sections/EcosystemImpact'
+import GovernanceFramework from '../components/sections/GovernanceFramework'
+import ComplianceLegal from '../components/sections/ComplianceLegal'
+import DisasterRecovery from '../components/sections/DisasterRecovery'
+import ModernUpdates from '../components/sections/ModernUpdates'
 import PDFExport from '../components/PDFExport'
 import ScrollToTop from '../components/ScrollToTop'
 import FloatingActions from '../components/FloatingActions'
@@ -46,6 +55,15 @@ export default function Home() {
       <StorageEconomics />
       <PilotPartners />
       <SecurityAppendix />
+      <EconomicModeling />
+      <WorkingPrototype />
+      <FormalSecurityProofs />
+      <ProductionReadiness />
+      <EcosystemImpact />
+      <GovernanceFramework />
+      <ComplianceLegal />
+      <DisasterRecovery />
+      <ModernUpdates />
       <SolutionPlaybook />
       <MigrationTimeline />
       <BlockchainComparison />
